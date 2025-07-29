@@ -207,6 +207,32 @@ html.modal-open body {
     transform: none;
   }
 
+  /* Mobile X close button */
+  .modal-content::after {
+    content: '×';
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--text-medium);
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    z-index: 10;
+  }
+
+  .modal-content::after:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: var(--text-primary);
+  }
+
   .modal-content h3 {
     font-size: 18px;
     margin: 0 0 8px 0;
@@ -293,6 +319,11 @@ html.modal-open body {
     line-height: 1.0;
   }
 
+  /* Hide the close button on mobile since we have X */
+  .modal-buttons .btn-secondary {
+    display: none;
+  }
+
   .modal-buttons {
     gap: 8px;
     margin-top: 12px;
@@ -310,17 +341,6 @@ html.modal-open body {
     border-radius: 6px;
     text-align: center;
     cursor: pointer;
-  }
-
-  .btn-secondary {
-    background: var(--text-medium);
-    color: white;
-    border: none;
-    min-width: 80px;
-  }
-
-  .btn-secondary:hover {
-    background: var(--text-primary);
   }
 }
 

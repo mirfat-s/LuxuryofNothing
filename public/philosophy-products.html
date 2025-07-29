@@ -673,6 +673,19 @@
       closeModal();
     });
 
+    // Mobile X button close functionality
+    document.querySelector('.modal-content').addEventListener('click', (e) => {
+      // Check if click is on the X button (::after pseudo-element area)
+      const rect = e.target.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+
+      // X button is positioned at top-right corner
+      if (clickX > rect.width - 36 && clickY < 36) {
+        closeModal();
+      }
+    });
+
     document.getElementById('choose-paysera').addEventListener('click', () => {
       showView('payment-view');
     });
