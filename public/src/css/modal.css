@@ -6,8 +6,11 @@
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(12px) saturate(120%);
+  background:
+    radial-gradient(circle at 30% 70%, rgba(196, 165, 114, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 70% 30%, rgba(196, 165, 114, 0.1) 0%, transparent 50%),
+    rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(20px) saturate(150%) brightness(0.9);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,17 +18,22 @@
   padding: var(--space-xl);
   box-sizing: border-box;
   overflow: hidden;
-  animation: modalFadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation: luxuryModalFadeIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-@keyframes modalFadeIn {
+@keyframes luxuryModalFadeIn {
   from {
     opacity: 0;
-    backdrop-filter: blur(0px);
+    backdrop-filter: blur(0px) saturate(100%) brightness(1);
+    background: rgba(0, 0, 0, 0);
   }
   to {
     opacity: 1;
-    backdrop-filter: blur(12px) saturate(120%);
+    backdrop-filter: blur(20px) saturate(150%) brightness(0.9);
+    background:
+      radial-gradient(circle at 30% 70%, rgba(196, 165, 114, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 70% 30%, rgba(196, 165, 114, 0.1) 0%, transparent 50%),
+      rgba(0, 0, 0, 0.85);
   }
 }
 
@@ -34,36 +42,73 @@
 }
 
 .modal-content {
-  background: var(--marble-white);
-  padding: var(--space-2xl);
+  background:
+    linear-gradient(135deg, var(--marble-white) 0%, var(--marble-cream) 100%);
+  padding: var(--space-3xl);
   color: var(--text-primary);
-  min-width: 400px;
+  min-width: 500px;
   max-width: 90vw;
   max-height: 90vh;
   box-shadow:
-    var(--shadow-luxury),
-    0 0 0 1px rgba(255, 255, 255, 0.1);
+    0 32px 128px rgba(0, 0, 0, 0.25),
+    0 16px 64px rgba(196, 165, 114, 0.15),
+    0 8px 32px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(196, 165, 114, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
   text-align: left;
-  border: 1px solid rgba(232, 230, 225, 0.3);
-  border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 24px;
   position: relative;
   margin: auto;
   overflow-y: auto;
-  backdrop-filter: blur(20px);
-  animation: modalContentSlideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  backdrop-filter: blur(30px) saturate(180%);
+  animation: luxuryModalSlideIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   z-index: 10000;
   opacity: 1;
   visibility: visible;
 }
 
-@keyframes modalContentSlideIn {
+.modal-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--gold-primary),
+    var(--gold-light),
+    var(--gold-primary),
+    transparent);
+  animation: luxuryShimmer 3s ease-in-out infinite;
+}
+
+@keyframes luxuryShimmer {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes luxuryModalSlideIn {
   from {
     opacity: 0;
-    transform: translateY(30px) scale(0.95);
+    transform: translateY(50px) scale(0.9) rotateX(10deg);
+    filter: blur(10px);
+    box-shadow:
+      0 16px 64px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(196, 165, 114, 0.1);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0) scale(1) rotateX(0deg);
+    filter: blur(0px);
+    box-shadow:
+      0 32px 128px rgba(0, 0, 0, 0.25),
+      0 16px 64px rgba(196, 165, 114, 0.15),
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(196, 165, 114, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
   }
 }
 
@@ -71,11 +116,26 @@
   display: none !important;
 }
 
+/* Keep only the luxury price styling */
+.modal-content .price {
+  font-family: 'Playfair Display', serif;
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--gold-primary);
+  text-align: center;
+  margin: var(--space-2xl) 0;
+  padding: var(--space-lg);
+  background: linear-gradient(135deg, var(--marble-cream), var(--marble-light));
+  border-radius: 16px;
+  border: 1px solid rgba(196, 165, 114, 0.2);
+  text-shadow: 0 2px 4px rgba(196, 165, 114, 0.3);
+  letter-spacing: -0.02em;
+}
+
 /* Ensure modal content is visible and interactive */
 .modal-content * {
   opacity: 1 !important;
   visibility: visible !important;
-  color: var(--text-primary) !important;
 }
 
 /* Allow text selection in modal content */
