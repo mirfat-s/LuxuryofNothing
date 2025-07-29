@@ -209,18 +209,91 @@
     }
     
     @media (max-width: 768px) {
-      .nav-links {
-        gap: 1rem;
+      .product-container {
+        grid-template-columns: 1fr;
+        gap: var(--space-2xl);
+        padding: var(--space-2xl) var(--space-lg);
+        text-align: center;
       }
-      
+
+      .product-image-large img {
+        max-width: 400px;
+      }
+
       .product-title {
-        font-size: 2rem;
+        font-size: clamp(2rem, 6vw, 2.5rem);
       }
-      
+
+      .product-description {
+        font-size: var(--font-size-lg);
+      }
+
+      .philosophy-container {
+        padding: 0 var(--space-lg);
+      }
+
+      .philosophy-title {
+        font-size: clamp(1.8rem, 5vw, 2.2rem);
+      }
+
       .void-cube-large {
-        width: 250px;
-        height: 250px;
+        width: 280px;
+        height: 280px;
         font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      /* Hide navbar on mobile phones */
+      .navbar {
+        display: none;
+      }
+
+      .product-section {
+        padding-top: var(--space-xl);
+      }
+
+      .product-container {
+        padding: var(--space-xl) var(--space-md);
+        gap: var(--space-xl);
+      }
+
+      .product-image-large img {
+        max-width: 300px;
+      }
+
+      .product-title {
+        font-size: clamp(1.8rem, 8vw, 2.2rem);
+        margin-bottom: var(--space-lg);
+      }
+
+      .product-description {
+        font-size: var(--font-size-base);
+        margin-bottom: var(--space-lg);
+      }
+
+      .cta-primary {
+        padding: var(--space-sm) var(--space-lg);
+        font-size: var(--font-size-sm);
+      }
+
+      .philosophy-container {
+        padding: 0 var(--space-md);
+      }
+
+      .philosophy-title {
+        font-size: clamp(1.5rem, 7vw, 2rem);
+      }
+
+      .philosophy-content p {
+        font-size: var(--font-size-sm);
+        line-height: 1.6;
+      }
+
+      .void-cube-large {
+        width: 220px;
+        height: 220px;
+        font-size: 1rem;
       }
     }
   </style>

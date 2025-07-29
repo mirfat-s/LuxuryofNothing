@@ -465,12 +465,18 @@ footer::before {
 }
 
 @media (max-width: 480px) {
+  /* Hide navigation on mobile phones */
+  .navbar {
+    display: none;
+  }
+
   .nav-container {
     padding: 0 var(--space-md);
   }
 
   .hero {
     padding: var(--space-md);
+    padding-top: var(--space-xl); /* Add top padding since navbar is hidden */
   }
 
   .hero-title {
