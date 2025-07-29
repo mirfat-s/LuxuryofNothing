@@ -147,6 +147,32 @@
   user-select: text !important;
 }
 
+/* PayPal button container styling */
+.paypal-container {
+  margin: var(--space-lg) 0;
+  padding: var(--space-md);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(196, 165, 114, 0.2);
+}
+
+#paypal-button-container {
+  min-height: 45px;
+}
+
+/* Mobile PayPal styling */
+@media (max-width: 480px) {
+  .paypal-container {
+    margin: 8px 0;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  #paypal-button-container {
+    min-height: 40px;
+  }
+}
+
 /* Prevent body scrolling when modal is open */
 body.modal-open {
   overflow: hidden !important;
