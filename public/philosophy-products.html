@@ -254,27 +254,35 @@
       }
 
       .product-container {
-        padding: var(--space-lg) var(--space-md);
-        gap: var(--space-md);
+        padding: var(--space-sm) var(--space-md);
+        gap: var(--space-sm);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
       }
 
       .product-image-large img {
-        max-width: 220px;
+        max-width: 180px;
+        margin-bottom: var(--space-xs);
       }
 
       .product-title {
-        font-size: clamp(1.8rem, 8vw, 2.2rem);
-        margin-bottom: var(--space-sm);
+        font-size: clamp(1.5rem, 6vw, 1.8rem);
+        margin-bottom: var(--space-xs);
+        line-height: 1.2;
       }
 
       .product-description {
-        font-size: var(--font-size-base);
-        margin-bottom: var(--space-md);
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--space-sm);
+        line-height: 1.4;
       }
 
       .cta-primary {
-        padding: var(--space-sm) var(--space-lg);
-        font-size: var(--font-size-sm);
+        padding: var(--space-xs) var(--space-md);
+        font-size: var(--font-size-xs);
+        margin-top: var(--space-xs);
       }
 
       .philosophy-container {
