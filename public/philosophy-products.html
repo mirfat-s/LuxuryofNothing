@@ -491,8 +491,8 @@
     </div>
   </footer>
 
-  <!-- PayPal SDK with enhanced options (no pay later) -->
-  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&buyer-country=US&currency=USD&components=buttons&enable-funding=venmo,card&disable-funding=paylater" data-sdk-integration-source="developer-studio"></script>
+  <!-- PayPal SDK with your actual Client ID (no pay later) -->
+  <script src="https://www.paypal.com/sdk/js?client-id=AT9fb4zbZq-t13_u1TQFYft77iBD2oAYmB5yn-v9Vow5wuMaU6fmn9TFp1LOfklb9w9GBWyZfekbX3bk&buyer-country=US&currency=USD&components=buttons&enable-funding=venmo,card&disable-funding=paylater" data-sdk-integration-source="developer-studio"></script>
   <!-- Paysera Integration -->
   <script src="/src/js/main.js"></script>
   <script src="/src/js/background-squares.js"></script>
@@ -582,13 +582,11 @@
         style: {
           shape: "rect",
           layout: "vertical",
-          color: "gold",
+          color: "blue",
           label: "paypal",
-          height: 45,
-          tagline: false
-        },
-        message: {
-          amount: 1999,
+          height: 50,
+          tagline: false,
+          borderRadius: 6
         },
         async createOrder() {
           try {
