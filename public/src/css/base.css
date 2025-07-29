@@ -92,6 +92,10 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 /* Prevent scrolling on landing page */
@@ -243,8 +247,20 @@ body.landing-page-body {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-.shine {
-  /* Shine effect now applied directly to .title-line elements */
+/* Prevent text selection on all elements */
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Allow text selection in form inputs */
+input, textarea {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
 }
 
 @keyframes shine {
