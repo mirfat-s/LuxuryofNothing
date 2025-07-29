@@ -386,27 +386,20 @@
       </section>
 
     </main>
-  </div>
 
-  <footer>
-    <div class="footer-content">
-      <p>&copy; 2024 Luxury of Nothing. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <!-- Modal moved outside main content for proper centering -->
-  <div id="detail-modal" class="modal hidden animated-fade-in delay-14" aria-modal="true" role="dialog">
+    <!-- Modal positioned inside main content for proper functionality -->
+  <div id="detail-modal" class="modal hidden" aria-modal="true" role="dialog">
     <div class="modal-content">
       <div id="product-info-view">
-        <h3 class="animated-fade-in delay-15">Philosophy</h3>
-        <p class="animated-fade-in delay-16">Owning nothing is the purest form of possession.</p>
-        <h4 class="animated-fade-in delay-17">Specifications:</h4>
-        <ul class="animated-fade-in delay-18">
+        <h3>Philosophy</h3>
+        <p>Owning nothing is the purest form of possession.</p>
+        <h4>Specifications:</h4>
+        <ul>
           <li>Dimension: Boundless</li>
           <li>Weight: Immeasurable</li>
           <li>Delivery: Instantaneous</li>
         </ul>
-        <p class="price animated-fade-in delay-19">Price: 1,999 $</p>
+        <p class="price">Price: 1,999 $</p>
         <div class="payment-methods-section">
           <h4>Choose Payment Method</h4>
           <div class="payment-methods-grid">
@@ -421,7 +414,7 @@
           </div>
         </div>
         <div class="modal-buttons">
-          <button class="btn-secondary animated-fade-in delay-20" id="close-modal">
+          <button class="btn-secondary" id="close-modal">
             <span>Close</span>
           </button>
         </div>
@@ -492,6 +485,14 @@
       </div>
     </div>
   </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2024 Luxury of Nothing. All rights reserved.</p>
+    </div>
+  </footer>
 
   <!-- PayPal SDK - Replace YOUR_PAYPAL_CLIENT_ID with your actual PayPal Client ID -->
   <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD&components=buttons"></script>
