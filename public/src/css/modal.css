@@ -190,75 +190,100 @@ html.modal-open body {
 @media (max-width: 480px) {
   .modal {
     padding: 0;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: center;
   }
 
   .modal-content {
-    padding: var(--space-xl) var(--space-lg);
-    border-radius: 16px 16px 0 0;
-    max-height: 90vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    padding: var(--space-md) var(--space-md);
+    border-radius: 16px;
+    max-height: 95vh;
+    height: auto;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   .modal-content h3 {
-    font-size: var(--font-size-xl);
-    margin-bottom: var(--space-md);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-xs);
     text-align: center;
   }
 
   .modal-content h4 {
-    font-size: var(--font-size-lg);
-    margin: var(--space-lg) 0 var(--space-sm) 0;
+    font-size: var(--font-size-base);
+    margin: var(--space-sm) 0 var(--space-xs) 0;
   }
 
   .modal-content p {
-    font-size: var(--font-size-base);
-    line-height: 1.5;
-    margin-bottom: var(--space-sm);
+    font-size: var(--font-size-sm);
+    line-height: 1.4;
+    margin-bottom: var(--space-xs);
   }
 
   .modal-content ul {
-    margin: var(--space-sm) 0;
+    margin: var(--space-xs) 0;
   }
 
   .modal-content li {
     padding: var(--space-xs) 0;
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xs);
+    line-height: 1.3;
   }
 
   .modal-content .price {
-    font-size: var(--font-size-2xl);
-    margin: var(--space-lg) 0;
-    padding: var(--space-md);
+    font-size: var(--font-size-xl);
+    margin: var(--space-sm) 0;
+    padding: var(--space-sm);
     border-radius: 12px;
   }
 
   .payment-methods-section {
-    margin: var(--space-lg) 0;
+    margin: var(--space-sm) 0;
+  }
+
+  .payment-methods-section h4 {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-xs);
   }
 
   .payment-methods-grid {
-    gap: var(--space-sm);
+    gap: var(--space-xs);
+    display: flex;
+    flex-direction: column;
   }
 
   .payment-method-btn {
-    padding: var(--space-md);
-    font-size: var(--font-size-sm);
-    border-radius: 12px;
-    min-height: 48px; /* Touch-friendly size */
+    padding: var(--space-sm);
+    font-size: var(--font-size-xs);
+    border-radius: 8px;
+    min-height: 40px;
+    text-align: center;
+  }
+
+  .payment-method-btn span {
+    display: block;
+    line-height: 1.2;
+  }
+
+  .payment-method-btn small {
+    font-size: 10px;
+    opacity: 0.8;
   }
 
   .modal-buttons {
-    gap: var(--space-sm);
-    margin-top: var(--space-lg);
+    gap: var(--space-xs);
+    margin-top: var(--space-sm);
+    display: flex;
+    flex-direction: row;
   }
 
   .modal-buttons button {
-    padding: var(--space-sm) var(--space-lg);
-    font-size: var(--font-size-sm);
-    min-height: 44px; /* Touch-friendly size */
-    border-radius: 12px;
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--font-size-xs);
+    min-height: 36px;
+    border-radius: 8px;
   }
 
   .cta-primary {
@@ -267,7 +292,7 @@ html.modal-open body {
 
   .btn-secondary {
     flex: 0 0 auto;
-    min-width: 80px;
+    min-width: 60px;
   }
 }
 
