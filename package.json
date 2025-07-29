@@ -1,0 +1,27 @@
+{
+  "name": "luxury-of-nothing",
+  "version": "1.0.0",
+  "description": "A luxury e-commerce site selling absolutely nothing",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "client": "live-server public --open"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.1",
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "luxury",
+    "nothing",
+    "e-commerce",
+    "stripe"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

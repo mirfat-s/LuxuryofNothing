@@ -1,0 +1,244 @@
+/* Floating Elements */
+.floating-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.floating-orb {
+  position: absolute;
+  background: radial-gradient(circle, rgba(196, 165, 114, 0.12) 0%, rgba(196, 165, 114, 0.06) 40%, transparent 70%);
+  border: 1px solid rgba(196, 165, 114, 0.25);
+  border-radius: 50%;
+  animation: float 20s ease-in-out infinite;
+  backdrop-filter: blur(2px);
+  box-shadow:
+    0 4px 16px rgba(196, 165, 114, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.orb-1 {
+  width: 120px;
+  height: 120px;
+  top: 20%;
+  right: 15%;
+  animation-delay: 0s;
+  animation-duration: 25s;
+}
+
+.orb-2 {
+  width: 80px;
+  height: 80px;
+  top: 60%;
+  left: 10%;
+  animation-delay: -8s;
+  animation-duration: 30s;
+}
+
+.orb-3 {
+  width: 60px;
+  height: 60px;
+  top: 30%;
+  left: 60%;
+  animation-delay: -15s;
+  animation-duration: 22s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translateY(-20px) rotate(90deg);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-10px) rotate(180deg);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(-30px) rotate(270deg);
+    opacity: 0.7;
+  }
+}
+
+/* Gradient Animations */
+.gradient-bg {
+  animation: gradientShift 15s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background: 
+      radial-gradient(ellipse at top, rgba(184, 166, 122, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom, rgba(184, 166, 122, 0.05) 0%, transparent 50%),
+      linear-gradient(135deg, var(--marble-white) 0%, var(--marble-cream) 100%);
+  }
+  50% {
+    background: 
+      radial-gradient(ellipse at top right, rgba(184, 166, 122, 0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at bottom left, rgba(184, 166, 122, 0.08) 0%, transparent 50%),
+      linear-gradient(135deg, var(--marble-cream) 0%, var(--marble-light) 100%);
+  }
+}
+
+/* Text Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Enhanced Section Entrance Animations */
+.animated-fade-in {
+  opacity: 0;
+  transform: translateY(50px) scale(0.96);
+  animation: fadeInSection 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  will-change: opacity, transform;
+}
+.animated-fade-in.delay-0 { animation-delay: 0s; }
+.animated-fade-in.delay-1 { animation-delay: 0.07s; }
+.animated-fade-in.delay-2 { animation-delay: 0.14s; }
+.animated-fade-in.delay-3 { animation-delay: 0.21s; }
+.animated-fade-in.delay-4 { animation-delay: 0.28s; }
+.animated-fade-in.delay-5 { animation-delay: 0.35s; }
+.animated-fade-in.delay-6 { animation-delay: 0.42s; }
+.animated-fade-in.delay-7 { animation-delay: 0.49s; }
+.animated-fade-in.delay-8 { animation-delay: 0.56s; }
+.animated-fade-in.delay-9 { animation-delay: 0.63s; }
+.animated-fade-in.delay-10 { animation-delay: 0.7s; }
+.animated-fade-in.delay-11 { animation-delay: 0.77s; }
+.animated-fade-in.delay-12 { animation-delay: 0.84s; }
+.animated-fade-in.delay-13 { animation-delay: 0.91s; }
+.animated-fade-in.delay-14 { animation-delay: 0.98s; }
+.animated-fade-in.delay-15 { animation-delay: 1.05s; }
+.animated-fade-in.delay-16 { animation-delay: 1.12s; }
+.animated-fade-in.delay-17 { animation-delay: 1.19s; }
+.animated-fade-in.delay-18 { animation-delay: 1.26s; }
+.animated-fade-in.delay-19 { animation-delay: 1.33s; }
+.animated-fade-in.delay-20 { animation-delay: 1.4s; }
+@keyframes fadeInSection {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Hover Animations */
+.feature-card {
+  animation: fadeInScale 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.feature-card:nth-child(1) { animation-delay: 0.1s; }
+.feature-card:nth-child(2) { animation-delay: 0.2s; }
+.feature-card:nth-child(3) { animation-delay: 0.3s; }
+
+/* Cursor Animations - Removed to fix visibility issues */
+
+/* Ripple Effect */
+.ripple {
+  position: fixed;
+  border: 2px solid var(--gold);
+  width: 0;
+  height: 0;
+  opacity: 0.8;
+  pointer-events: none;
+  animation: rippleExpand 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  z-index: 9998;
+}
+
+@keyframes rippleExpand {
+  to {
+    transform: scale(50);
+    opacity: 0;
+  }
+}
+
+/* Smooth Transitions */
+* {
+  transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Loading Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.loading {
+  background: linear-gradient(90deg, var(--marble-light) 25%, var(--marble-vein) 50%, var(--marble-light) 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Scroll Animations */
+.scroll-fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Parallax Effect for Title */
+.hero-title {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.title-line {
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+
+.title-line.luxury-line {
+  transform: translateZ(20px);
+}
+
+.title-line.nothing-line {
+  transform: translateZ(40px);
+}
+
+/* Parallax movement classes */
+.title-line.parallax-1 {
+  transform: translateZ(20px) translateX(var(--mouse-x, 0px)) translateY(var(--mouse-y, 0px)) rotateX(var(--rotate-x, 0deg)) rotateY(var(--rotate-y, 0deg));
+}
+
+.title-line.parallax-2 {
+  transform: translateZ(40px) translateX(calc(var(--mouse-x, 0px) * 1.5)) translateY(calc(var(--mouse-y, 0px) * 1.5)) rotateX(calc(var(--rotate-x, 0deg) * 0.6)) rotateY(calc(var(--rotate-y, 0deg) * 0.6));
+}
+
+.title-line.parallax-3 {
+  transform: translateZ(60px) translateX(calc(var(--mouse-x, 0px) * 2)) translateY(calc(var(--mouse-y, 0px) * 2)) rotateX(calc(var(--rotate-x, 0deg) * 0.4)) rotateY(calc(var(--rotate-y, 0deg) * 0.4));
+}

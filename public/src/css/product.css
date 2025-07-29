@@ -1,0 +1,112 @@
+.product-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+}
+
+.product-card {
+  background: var(--marble-light);
+  border: 1px solid var(--marble-vein);
+  padding: 3rem 2rem;
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+  backdrop-filter: blur(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-strong);
+  border-color: var(--gold);
+}
+
+.product-image {
+  margin-bottom: 2rem;
+}
+
+.product-image-large img,
+.product-image-fade {
+  max-width: 600px;
+  height: auto;
+  display: block;
+  margin: 0 auto var(--space-lg) auto;
+  transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  filter:
+    drop-shadow(0 12px 48px rgba(0, 0, 0, 0.15))
+    drop-shadow(0 4px 16px rgba(0, 0, 0, 0.1));
+  opacity: 0.95;
+  will-change: transform, filter, opacity;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.product-image-large img:hover,
+.product-image-fade:hover {
+  transform: scale(1.08) translateY(-8px);
+  filter:
+    drop-shadow(0 24px 80px rgba(196, 165, 114, 0.3))
+    drop-shadow(0 8px 32px rgba(196, 165, 114, 0.2))
+    drop-shadow(0 0 24px rgba(196, 165, 114, 0.15));
+  opacity: 1;
+}
+
+.product-image-large img.animated-fade-in {
+  /* Use only opacity and translateY for animation, do not touch scale */
+  animation: fadeInSectionImg 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeInSectionImg {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.product-card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+}
+
+.product-card p {
+  color: var(--text-medium);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.price {
+  font-size: 1.3rem;
+  color: var(--gold);
+  margin: 1.5rem 0;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .product-pane {
+    min-height: 40vh;
+  }
+  
+  .product-card {
+    padding: 2rem 1.5rem;
+    margin: 0 1rem;
+  }
+  
+  .product-card h2 {
+    font-size: 1.75rem;
+  }
+  
+  .product-card p {
+    font-size: 1rem;
+  }
+}

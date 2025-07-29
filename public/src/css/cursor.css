@@ -1,0 +1,28 @@
+/* Custom cursor disabled - using default browser cursor */
+
+.ripple {
+  position: fixed;
+  border: 2px solid var(--gold);
+  width: 0;
+  height: 0;
+  opacity: 0.8;
+  pointer-events: none;
+  animation: rippleExpand 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  z-index: 9998;
+}
+
+@keyframes rippleExpand {
+  to {
+    transform: scale(50);
+    opacity: 0;
+  }
+}
+
+/* Show default cursor on all elements */
+body {
+  cursor: auto;
+}
+
+a, button, [role="button"], input, textarea, select {
+  cursor: pointer;
+}

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="verify-paysera" content="1ab88174dfbec4cbf64764d0f98b92d1">
+  <title>Philosophy & Collection — Luxury of Nothing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Playfair+Display:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/css/base.css">
+  <link rel="stylesheet" href="/src/css/animations.css">
+  <link rel="stylesheet" href="/src/css/buttons.css">
+  <link rel="stylesheet" href="/src/css/cursor.css">
+  <link rel="stylesheet" href="/src/css/orb.css">
+  <link rel="stylesheet" href="/src/css/modal.css">
+  <link rel="stylesheet" href="/src/css/product.css">
+  <link rel="stylesheet" href="/src/css/why.css">
+  <link rel="stylesheet" href="/src/css/luxury-details.css">
+  <link rel="stylesheet" href="/src/css/page-transition.css">
+  <style>
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(248, 247, 244, 0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--marble-vein);
+      z-index: 1000;
+      padding: 1rem 0;
+    }
+    
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-decoration: none;
+    }
+    
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .nav-link {
+      color: var(--text-medium);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--gold);
+    }
+    
+    .main-content {
+      padding-top: 80px;
+    }
+    
+    .product-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 20% 80%, rgba(196, 165, 114, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(196, 165, 114, 0.04) 0%, transparent 50%),
+        linear-gradient(135deg, var(--marble-white) 0%, var(--marble-cream) 50%, var(--marble-light) 100%);
+      padding: var(--space-4xl) var(--space-xl);
+      position: relative;
+    }
+
+    .product-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.008'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+    
+    .product-container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: var(--space-4xl) var(--space-xl);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5xl);
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .product-image-large {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 600px;
+    }
+    
+
+    
+    .product-info {
+      text-align: left;
+    }
+    
+    .product-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 700;
+      margin-bottom: var(--space-xl);
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    .product-description {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--font-size-xl);
+      line-height: 1.7;
+      color: var(--text-medium);
+      margin-bottom: var(--space-2xl);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+    
+    .philosophy-section {
+      background: linear-gradient(135deg, var(--marble-cream) 0%, var(--marble-light) 100%);
+      padding: 6rem 2rem;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+    
+    .philosophy-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--dark-overlay);
+      z-index: 0;
+    }
+    
+    .philosophy-container {
+      max-width: 800px;
+      margin: 0 auto;
+      z-index: 1;
+      position: relative;
+    }
+    
+    .philosophy-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 3rem;
+      color: var(--text-dark);
+      text-align: center;
+    }
+    
+    .philosophy-content {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--text-medium);
+    }
+    
+    .philosophy-content p {
+      margin-bottom: 2rem;
+    }
+    
+    .philosophy-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--gold);
+      text-align: center;
+      margin: 3rem 0;
+      padding: 2rem;
+      border-left: 4px solid var(--gold);
+      background: rgba(184, 166, 122, 0.05);
+    }
+    
+    @media (max-width: 1024px) {
+      .product-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .void-cube-large {
+        width: 300px;
+        height: 300px;
+        font-size: 1.5rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .nav-links {
+        gap: 1rem;
+      }
+      
+      .product-title {
+        font-size: 2rem;
+      }
+      
+      .void-cube-large {
+        width: 250px;
+        height: 250px;
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div class="gradient-bg"></div>
+  <div class="page-transition-overlay"></div>
+  
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">Luxury of Nothing</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="philosophy-products.html" class="nav-link active">Philosophy & Nothing</a>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="main-content">
+    <main>
+      <section class="product-section">
+        <div class="product-container">
+          <div class="product-image-large animated-fade-in delay-0">
+            <img src="/product.png" alt="Absolutely Nothing" class="animated-fade-in product-image-fade delay-1">
+          </div>
+          <div class="product-info animated-fade-in delay-2">
+            <h1 class="product-title animated-fade-in delay-3">Absolutely Nothing</h1>
+            <p class="product-description animated-fade-in delay-4">
+              An exclusive absence, tailored for those who already have everything. 
+              This is not a product in the traditional sense, but an invitation to 
+              embrace the luxury of nothingness.
+            </p>
+            <button class="cta-primary animated-fade-in delay-5" id="detail-btn">
+              <span>Procure Silence</span>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="philosophy-section">
+        <div class="philosophy-container animated-fade-in delay-6">
+          <h2 class="philosophy-title luxury-heading animated-fade-in delay-7">The Philosophy of Nothing</h2>
+          <div class="luxury-divider"></div>
+          <div class="philosophy-content">
+            <p class="animated-fade-in delay-8">
+              In a world where material possessions define success and status, we propose 
+              a radical alternative: the luxury of nothing. This is not about deprivation, 
+              but about the profound freedom that comes from intentional absence.
+            </p>
+            <div class="philosophy-quote animated-fade-in delay-9">
+              "In a world inundated with excess, nothing is the ultimate luxury."
+            </div>
+            <p class="animated-fade-in delay-10">
+              Our philosophy draws from ancient wisdom traditions that recognize the power 
+              of emptiness. From the Zen concept of "mu" (nothingness) to the minimalist 
+              principles of essentialism, we understand that true luxury lies not in 
+              accumulation, but in the space between things.
+            </p>
+            <p class="animated-fade-in delay-11">
+              When you own nothing, you are free from the burden of possessions. You are 
+              liberated from the constant need to acquire, maintain, and protect material 
+              goods. This freedom allows you to focus on what truly matters: experiences, 
+              relationships, and personal growth.
+            </p>
+            <p class="animated-fade-in delay-12">
+              Absolutely Nothing is not a product in the traditional sense. It is an 
+              invitation to embrace the luxury of absence, to find richness in simplicity, 
+              and to discover that the most valuable thing you can possess is the space 
+              to be yourself.
+            </p>
+            <p class="animated-fade-in delay-13">
+              This is not for everyone. It is for those who have experienced the emptiness 
+              of material abundance and seek something deeper. It is for those who understand 
+              that true luxury is not about having more, but about needing less.
+            </p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2024 Luxury of Nothing. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Modal moved outside main content for proper centering -->
+  <div id="detail-modal" class="modal hidden animated-fade-in delay-14" aria-modal="true" role="dialog">
+    <div class="modal-content">
+      <div id="product-info-view">
+        <h3 class="animated-fade-in delay-15">Philosophy</h3>
+        <p class="animated-fade-in delay-16">Owning nothing is the purest form of possession.</p>
+        <h4 class="animated-fade-in delay-17">Specifications:</h4>
+        <ul class="animated-fade-in delay-18">
+          <li>Dimension: Boundless</li>
+          <li>Weight: Immeasurable</li>
+          <li>Delivery: Instantaneous</li>
+        </ul>
+        <p class="price animated-fade-in delay-19">Price: 1,999 $</p>
+        <div class="payment-methods-section">
+          <h4>Choose Payment Method</h4>
+          <div class="payment-methods-grid">
+            <button type="button" class="payment-method-btn" id="choose-paysera">
+              <span>💳 Pay with Paysera</span>
+              <small>Credit cards, bank transfers</small>
+            </button>
+            <button type="button" class="payment-method-btn" id="choose-paypal">
+              <span>🅿️ Pay with PayPal</span>
+              <small>PayPal account or cards</small>
+            </button>
+          </div>
+        </div>
+        <div class="modal-buttons">
+          <button class="btn-secondary animated-fade-in delay-20" id="close-modal">
+            <span>Close</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="payment-view" class="hidden">
+        <h3>Complete Your Purchase</h3>
+        <p class="price">Total: 1,999 $</p>
+
+
+        <form id="paysera-payment-form" method="POST" action="https://bank.paysera.com/pay/">
+          <div class="payment-section">
+            <h3>Complete Payment with Paysera</h3>
+            <p class="price">Total: 1,999 $</p>
+
+            <!-- Paysera Hidden Fields -->
+            <input type="hidden" name="projectid" value="YOUR_PAYSERA_PROJECT_ID">
+            <input type="hidden" name="orderid" value="" id="paysera-orderid">
+            <input type="hidden" name="amount" value="199900">
+            <input type="hidden" name="currency" value="USD">
+            <input type="hidden" name="country" value="AL">
+            <input type="hidden" name="accepturl" value="https://yourdomain.com/success">
+            <input type="hidden" name="cancelurl" value="https://yourdomain.com/cancel">
+            <input type="hidden" name="callbackurl" value="https://yourdomain.com/callback">
+            <input type="hidden" name="sign" value="" id="paysera-sign">
+            <input type="hidden" name="test" value="1">
+
+            <div class="form-group">
+              <label for="p_email">Email Address (for receipt)</label>
+              <input type="email" name="p_email" id="p_email" placeholder="your@email.com" required>
+            </div>
+          </div>
+
+          <div class="modal-buttons">
+            <button type="submit" class="cta-primary" id="paysera-submit">
+              <span>Continue to Paysera - 1,999 $</span>
+            </button>
+            <button type="button" class="btn-secondary" id="back-to-info">
+              <span>Back</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div id="paypal-view" class="hidden">
+        <h3>Pay with PayPal</h3>
+        <p class="price">Total: 1,999 $</p>
+        <div class="paypal-container">
+          <div id="paypal-button-container"></div>
+        </div>
+        <div class="modal-buttons">
+          <button type="button" class="btn-secondary" id="back-to-info-from-paypal">
+            <span>Back</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="success-view" class="hidden">
+        <div class="success-content">
+          <h3>🎉 Purchase Complete!</h3>
+          <p>Congratulations! You have successfully acquired absolutely nothing.</p>
+          <p>Your receipt has been sent to your email.</p>
+          <p class="success-message">Enjoy the luxury of nothingness.</p>
+          <button class="cta-primary" id="close-success">
+            <span>Embrace the Void</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PayPal SDK - Replace YOUR_PAYPAL_CLIENT_ID with your actual PayPal Client ID -->
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD&components=buttons"></script>
+  <!-- Paysera Integration -->
+  <script src="/src/js/main.js"></script>
+  <script src="/src/js/background-squares.js"></script>
+  <script>
+    // Paysera configuration
+    const PAYSERA_PROJECT_ID = 'YOUR_PAYSERA_PROJECT_ID'; // Replace with your Paysera project ID
+    const PAYSERA_PASSWORD = 'YOUR_PAYSERA_PASSWORD'; // Replace with your Paysera password
+
+    // Initialize Paysera and PayPal when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initializePaysera();
+      if (typeof paypal !== 'undefined') {
+        initializePayPal();
+      }
+    });
+
+    function initializePaysera() {
+      // Set project ID
+      document.querySelector('input[name="projectid"]').value = PAYSERA_PROJECT_ID;
+
+      // Generate unique order ID
+      const orderId = 'ORDER_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      document.getElementById('paysera-orderid').value = orderId;
+
+      // Add form submission handler
+      document.getElementById('paysera-payment-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Validate form for Paysera
+        if (!validatePayseraForm()) {
+          return;
+        }
+
+        // Generate signature and submit to Paysera
+        generatePayseraSignature();
+
+        // Show loading state
+        const submitBtn = document.getElementById('paysera-submit');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span>Redirecting to Paysera...</span>';
+        submitBtn.disabled = true;
+
+        // Submit form after short delay
+        setTimeout(() => {
+          this.submit();
+        }, 1000);
+      });
+    }
+
+    function validatePayseraForm() {
+      const email = document.getElementById('p_email').value;
+
+      if (!email) {
+        alert('Please enter your email address');
+        return false;
+      }
+
+      if (!isValidEmail(email)) {
+        alert('Please enter a valid email address');
+        return false;
+      }
+
+      return true;
+    }
+
+    function generatePayseraSignature() {
+      // In a real implementation, this should be done on your server
+      // For now, we'll use a simple placeholder
+      // The signature is generated using MD5 hash of specific parameters + password
+
+      const orderId = document.getElementById('paysera-orderid').value;
+      const amount = '185000';
+      const currency = 'EUR';
+      const projectId = PAYSERA_PROJECT_ID;
+
+      // This is a simplified version - in production, generate this on your server
+      const signatureData = `${projectId}|${orderId}|${amount}|${currency}|${PAYSERA_PASSWORD}`;
+
+      // For demo purposes, we'll use a placeholder signature
+      // In production, calculate MD5 hash on your server
+      document.getElementById('paysera-sign').value = 'demo_signature_' + Date.now();
+    }
+
+    // Initialize PayPal
+    function initializePayPal() {
+      paypal.Buttons({
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: '1999.00', // $1,999
+                currency_code: 'USD'
+              },
+              description: 'Absolutely Nothing - Luxury of Nothing'
+            }]
+          });
+        },
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+            console.log('PayPal payment completed:', details);
+            showView('success-view');
+          });
+        },
+        onError: function(err) {
+          console.error('PayPal error:', err);
+          alert('PayPal payment failed. Please try again.');
+        },
+        onCancel: function(data) {
+          console.log('PayPal payment cancelled:', data);
+          showView('product-info-view');
+        },
+        style: {
+          color: 'gold',
+          shape: 'rect',
+          label: 'pay',
+          height: 45,
+          tagline: false
+        }
+      }).render('#paypal-button-container');
+    }
+
+    // Utility function to generate MD5 hash (for demo only)
+    function simpleMD5(str) {
+      // This is a very basic hash function for demo purposes only
+      // In production, use proper MD5 implementation on your server
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32-bit integer
+      }
+      return Math.abs(hash).toString(16);
+    }
+
+    function openModal() {
+      const modal = document.getElementById('detail-modal');
+      modal.classList.remove('hidden');
+      document.documentElement.classList.add('modal-open');
+      document.body.classList.add('modal-open');
+      showView('product-info-view');
+    }
+
+    function closeModal() {
+      document.getElementById('detail-modal').classList.add('hidden');
+      document.documentElement.classList.remove('modal-open');
+      document.body.classList.remove('modal-open');
+      // Reset form
+      document.getElementById('paysera-payment-form').reset();
+      // Regenerate order ID
+      const orderId = 'ORDER_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+      document.getElementById('paysera-orderid').value = orderId;
+    }
+
+    function showView(viewId) {
+      // Hide all views
+      document.getElementById('product-info-view').classList.add('hidden');
+      document.getElementById('payment-view').classList.add('hidden');
+      document.getElementById('paypal-view').classList.add('hidden');
+      document.getElementById('success-view').classList.add('hidden');
+
+      // Show selected view
+      document.getElementById(viewId).classList.remove('hidden');
+    }
+
+    // Validate email
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // Event listeners
+    document.getElementById('detail-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openModal();
+    });
+
+    document.getElementById('close-modal').addEventListener('click', () => {
+      closeModal();
+    });
+
+    document.getElementById('choose-paysera').addEventListener('click', () => {
+      showView('payment-view');
+    });
+
+    document.getElementById('choose-paypal').addEventListener('click', () => {
+      alert('PayPal integration is currently disabled for demo purposes. Please use Paysera payment method.');
+      // showView('paypal-view');
+    });
+
+    document.getElementById('back-to-info').addEventListener('click', () => {
+      showView('product-info-view');
+    });
+
+    document.getElementById('close-success').addEventListener('click', () => {
+      closeModal();
+    });
+
+    document.getElementById('back-to-info-from-paypal').addEventListener('click', () => {
+      showView('product-info-view');
+    });
+
+
+
+
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal();
+      }
+    });
+
+    // Click outside to close functionality removed to prevent issues
+  </script>
+</body>
+</html>

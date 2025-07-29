@@ -1,0 +1,63 @@
+.why-section {
+  max-width: 800px;
+  margin: 4rem auto;
+  background: var(--marble-light);
+  border: 1px solid var(--marble-vein);
+  padding: 3rem 2rem;
+  box-shadow: var(--shadow-soft);
+  text-align: left;
+  backdrop-filter: blur(20px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.why-section:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-strong);
+  border-color: var(--gold);
+}
+
+.why-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: var(--text-dark);
+  text-align: center;
+}
+
+.why-section p {
+  color: var(--text-medium);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.why-section .philosophy-quote {
+  font-size: 1.3rem;
+  font-style: italic;
+  margin: 2rem 0;
+  color: var(--gold);
+  font-family: 'Playfair Display', serif;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .why-section {
+    margin: 2rem 1rem;
+    padding: 2rem 1.5rem;
+  }
+  
+  .why-section h2 {
+    font-size: 1.75rem;
+  }
+  
+  .why-section p {
+    font-size: 1rem;
+  }
+  
+  .why-section .philosophy-quote {
+    font-size: 1.2rem;
+  }
+} 

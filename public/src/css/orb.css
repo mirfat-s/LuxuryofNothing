@@ -1,0 +1,8 @@
+.orb {
+    position: fixed;
+    background: rgba(197,168,128,0.05);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: float var(--duration) ease-in-out infinite;
+    animation-delay: var(--delay);
+  }

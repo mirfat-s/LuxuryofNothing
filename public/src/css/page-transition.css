@@ -1,0 +1,64 @@
+/* Page transition overlay */
+.page-transition-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--marble-white, #F8F7F4);
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.page-transition-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Entering animation for page content */
+.page-enter {
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+  transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.page-enter.page-enter-active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Prevent scrollbars during page transitions */
+body.page-transitioning {
+  overflow: hidden !important;
+}
+
+/* Remove scrollbars from everywhere */
+html, body {
+  overflow-x: hidden !important;
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* Internet Explorer 10+ */
+}
+
+/* Hide scrollbars for webkit browsers (Chrome, Safari, Edge) */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+/* Ensure content is still scrollable but without visible scrollbars */
+html, body {
+  overflow-y: auto !important;
+}
+
+/* Remove scrollbars from all elements */
+* {
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* Internet Explorer 10+ */
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+}
