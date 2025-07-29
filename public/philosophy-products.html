@@ -491,8 +491,8 @@
     </div>
   </footer>
 
-  <!-- PayPal SDK - Replace YOUR_PAYPAL_CLIENT_ID with your actual PayPal Client ID -->
-  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD&components=buttons"></script>
+  <!-- PayPal SDK with enhanced options (no pay later) -->
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&buyer-country=US&currency=USD&components=buttons&enable-funding=venmo,card&disable-funding=paylater" data-sdk-integration-source="developer-studio"></script>
   <!-- Paysera Integration -->
   <script src="/src/js/main.js"></script>
   <script src="/src/js/background-squares.js"></script>
@@ -578,23 +578,59 @@
 
     // Initialize PayPal
     function initializePayPal() {
-      paypal.Buttons({
-        createOrder: function(data, actions) {
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value: '1999.00', // $1,999
-                currency_code: 'USD'
-              },
-              description: 'Absolutely Nothing - Luxury of Nothing'
-            }]
-          });
+      const paypalButtons = paypal.Buttons({
+        style: {
+          shape: "rect",
+          layout: "vertical",
+          color: "gold",
+          label: "paypal",
+          height: 45,
+          tagline: false
         },
-        onApprove: function(data, actions) {
-          return actions.order.capture().then(function(details) {
+        message: {
+          amount: 1999,
+        },
+        async createOrder() {
+          try {
+            // For now, create order directly (you can add server integration later)
+            return paypal.order.create({
+              purchase_units: [{
+                amount: {
+                  value: '1999.00',
+                  currency_code: 'USD',
+                  breakdown: {
+                    item_total: {
+                      currency_code: 'USD',
+                      value: '1999.00',
+                    },
+                  },
+                },
+                items: [{
+                  name: 'Absolutely Nothing',
+                  unit_amount: {
+                    currency_code: 'USD',
+                    value: '1999.00',
+                  },
+                  quantity: '1',
+                  description: 'The Ultimate Luxury of Nothingness',
+                  sku: 'LUXURY_NOTHING_001',
+                }],
+              }],
+            });
+          } catch (error) {
+            console.error('PayPal createOrder error:', error);
+            alert('Could not initiate PayPal Checkout. Please try again.');
+          }
+        },
+        async onApprove(data, actions) {
+          try {
+            const details = await actions.order.capture();
             console.log('PayPal payment completed:', details);
             showView('success-view');
-          });
+          } catch (error) {
+            console.error('PayPal capture error:', error);
+            alert(`Sorry, your transaction could not be processed. ${error}`);
+          }
         },
         onError: function(err) {
           console.error('PayPal error:', err);
@@ -603,15 +639,10 @@
         onCancel: function(data) {
           console.log('PayPal payment cancelled:', data);
           showView('product-info-view');
-        },
-        style: {
-          color: 'gold',
-          shape: 'rect',
-          label: 'pay',
-          height: 45,
-          tagline: false
         }
-      }).render('#paypal-button-container');
+      });
+
+      paypalButtons.render('#paypal-button-container');
     }
 
     // Utility function to generate MD5 hash (for demo only)
