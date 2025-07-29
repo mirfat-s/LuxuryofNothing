@@ -111,6 +111,32 @@ function handlePageLinkTransition(e) {
   }, 400); // match CSS transition
 }
 
+// Handle browser back/forward navigation
+window.addEventListener('pageshow', (event) => {
+  // Reset page state when coming back from cache
+  if (event.persisted) {
+    // Remove any transition overlays
+    const overlay = document.querySelector('.page-transition-overlay');
+    if (overlay) {
+      overlay.classList.remove('active');
+    }
+
+    // Reset body classes
+    document.body.classList.remove('page-transitioning');
+
+    // Ensure content is visible
+    const mainContent = document.querySelector('.main-content') || document.body;
+    mainContent.style.opacity = '1';
+    mainContent.style.visibility = 'visible';
+
+    // Re-trigger animations
+    document.querySelectorAll('.animated-fade-in').forEach(el => {
+      el.style.visibility = 'visible';
+      el.classList.add('fade-in-triggered');
+    });
+  }
+});
+
 window.addEventListener('DOMContentLoaded', () => {
   // Attach to nav and cta links
   document.querySelectorAll('a.nav-link, a.cta-primary').forEach(link => {
@@ -137,6 +163,15 @@ window.addEventListener('DOMContentLoaded', () => {
     el.style.visibility = 'visible';
     el.classList.add('fade-in-triggered');
   });
+
+  // Fallback: Ensure page is always visible after a short delay
+  setTimeout(() => {
+    document.body.style.opacity = '1';
+    document.body.style.visibility = 'visible';
+    const mainContent = document.querySelector('.main-content') || document.body;
+    mainContent.style.opacity = '1';
+    mainContent.style.visibility = 'visible';
+  }, 100);
 });
 
 
