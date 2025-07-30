@@ -9,7 +9,10 @@
     "client": "live-server public --open"
   },
   "dependencies": {
+    "@paypal/paypal-server-sdk": "^1.1.0",
+    "body-parser": "^2.2.0",
     "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
     "express": "^4.21.2"
   },
   "devDependencies": {

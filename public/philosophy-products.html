@@ -461,9 +461,8 @@
       <div id="paypal-view" class="hidden">
         <h3>Pay with PayPal</h3>
         <p class="price">Total: 1,999 $</p>
-        <div class="paypal-container">
-          <div id="paypal-button-container"></div>
-        </div>
+        <div id="paypal-button-container"></div>
+        <p id="result-message"></p>
         <div class="modal-buttons">
           <button type="button" class="btn-secondary" id="back-to-info-from-paypal">
             <span>Back</span>
@@ -492,7 +491,8 @@
   </footer>
 
   <!-- PayPal SDK with your actual Client ID (no pay later) -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AT9fb4zbZq-t13_u1TQFYft77iBD2oAYmB5yn-v9Vow5wuMaU6fmn9TFp1LOfklb9w9GBWyZfekbX3bk&buyer-country=US&currency=USD&components=buttons&enable-funding=venmo,card&disable-funding=paylater" data-sdk-integration-source="developer-studio"></script>
+  <!-- LIVE PayPal Client ID - Real payments enabled -->
+  <script src="https://www.paypal.com/sdk/js?client-id=Ada4aDxdU4UD5AiuL7jyJBr54vAMzcJApR9eHmzTsAYEsORvUlZNS2uKXv7aESWj2FCZYbflxo8NY2nKAUJcGtYfO9xUT_bxCNpkSM5JFbdQ2HtUW_p3Fr2aXupCW7r4tdypMBZG_Px9I7-MVXhOjLVzmAXyoOPF&buyer-country=US&currency=USD&components=buttons&enable-funding=venmo,card&disable-funding=paylater" data-sdk-integration-source="developer-studio"></script>
   <!-- Paysera Integration -->
   <script src="/src/js/main.js"></script>
   <script src="/src/js/background-squares.js"></script>
@@ -578,65 +578,46 @@
 
     // Initialize PayPal
     function initializePayPal() {
-      const paypalButtons = paypal.Buttons({
+      const paypalButtons = window.paypal.Buttons({
         style: {
           shape: "rect",
           layout: "vertical",
-          color: "blue",
+          color: "gold",
           label: "paypal",
-          height: 50,
-          tagline: false,
-          borderRadius: 6
         },
-        async createOrder() {
-          try {
-            // For now, create order directly (you can add server integration later)
-            return paypal.order.create({
-              purchase_units: [{
-                amount: {
-                  value: '1999.00',
-                  currency_code: 'USD',
-                  breakdown: {
-                    item_total: {
-                      currency_code: 'USD',
-                      value: '1999.00',
-                    },
-                  },
-                },
-                items: [{
-                  name: 'Absolutely Nothing',
-                  unit_amount: {
-                    currency_code: 'USD',
-                    value: '1999.00',
-                  },
-                  quantity: '1',
-                  description: 'The Ultimate Luxury of Nothingness',
-                  sku: 'LUXURY_NOTHING_001',
-                }],
-              }],
-            });
-          } catch (error) {
-            console.error('PayPal createOrder error:', error);
-            alert('Could not initiate PayPal Checkout. Please try again.');
-          }
+        message: {
+          amount: 1999,
         },
-        async onApprove(data, actions) {
-          try {
-            const details = await actions.order.capture();
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: '1999.00',
+                currency_code: 'USD'
+              },
+              description: 'Absolutely Nothing - Luxury of Nothing'
+            }]
+          });
+        },
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+            document.getElementById("result-message").innerHTML =
+              `Transaction completed by ${details.payer.name.given_name}!<br>Transaction ID: ${details.id}`;
             console.log('PayPal payment completed:', details);
             showView('success-view');
-          } catch (error) {
+          }).catch(function(error) {
             console.error('PayPal capture error:', error);
-            alert(`Sorry, your transaction could not be processed. ${error}`);
-          }
+            document.getElementById("result-message").innerHTML =
+              `Sorry, your transaction could not be processed...<br><br>${error}`;
+          });
         },
         onError: function(err) {
           console.error('PayPal error:', err);
-          alert('PayPal payment failed. Please try again.');
+          document.getElementById("result-message").innerHTML = 'Payment failed. Please try again.';
         },
         onCancel: function(data) {
           console.log('PayPal payment cancelled:', data);
-          showView('product-info-view');
+          document.getElementById("result-message").innerHTML = 'Payment cancelled.';
         }
       });
 
