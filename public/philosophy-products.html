@@ -578,50 +578,73 @@
 
     // Initialize PayPal
     function initializePayPal() {
-      const paypalButtons = window.paypal.Buttons({
-        style: {
-          shape: "rect",
-          layout: "vertical",
-          color: "gold",
-          label: "paypal",
-        },
-        message: {
-          amount: 1999,
-        },
-        createOrder: function(data, actions) {
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value: '1999.00',
-                currency_code: 'USD'
-              },
-              description: 'Absolutely Nothing - Luxury of Nothing'
-            }]
-          });
-        },
-        onApprove: function(data, actions) {
-          return actions.order.capture().then(function(details) {
-            document.getElementById("result-message").innerHTML =
-              `Transaction completed by ${details.payer.name.given_name}!<br>Transaction ID: ${details.id}`;
-            console.log('PayPal payment completed:', details);
-            showView('success-view');
-          }).catch(function(error) {
-            console.error('PayPal capture error:', error);
-            document.getElementById("result-message").innerHTML =
-              `Sorry, your transaction could not be processed...<br><br>${error}`;
-          });
-        },
-        onError: function(err) {
-          console.error('PayPal error:', err);
-          document.getElementById("result-message").innerHTML = 'Payment failed. Please try again.';
-        },
-        onCancel: function(data) {
-          console.log('PayPal payment cancelled:', data);
-          document.getElementById("result-message").innerHTML = 'Payment cancelled.';
-        }
-      });
+      // Check if PayPal SDK is loaded
+      if (typeof paypal === 'undefined') {
+        document.getElementById("result-message").innerHTML = 'PayPal SDK not loaded. Please refresh the page.';
+        return;
+      }
 
-      paypalButtons.render('#paypal-button-container');
+      try {
+        const paypalButtons = paypal.Buttons({
+          style: {
+            shape: "rect",
+            layout: "vertical",
+            color: "gold",
+            label: "paypal",
+            height: 50
+          },
+          createOrder: function(data, actions) {
+            return actions.order.create({
+              purchase_units: [{
+                amount: {
+                  value: '1999.00',
+                  currency_code: 'USD'
+                },
+                description: 'Absolutely Nothing - Luxury of Nothing',
+                custom_id: 'LUXURY_NOTHING_' + Date.now()
+              }]
+            });
+          },
+          onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+              document.getElementById("result-message").innerHTML =
+                `✅ Payment Successful!<br>Transaction ID: ${details.id}<br>Thank you ${details.payer.name.given_name}!`;
+              console.log('PayPal payment completed:', details);
+              setTimeout(() => {
+                showView('success-view');
+              }, 2000);
+            }).catch(function(error) {
+              console.error('PayPal capture error:', error);
+              document.getElementById("result-message").innerHTML =
+                `❌ Payment processing failed. Please try again.`;
+            });
+          },
+          onError: function(err) {
+            console.error('PayPal error:', err);
+            document.getElementById("result-message").innerHTML = '❌ PayPal error occurred. Please try again.';
+          },
+          onCancel: function(data) {
+            console.log('PayPal payment cancelled:', data);
+            document.getElementById("result-message").innerHTML = '⚠️ Payment was cancelled.';
+          }
+        });
+
+        // Clear any existing content and render PayPal buttons
+        const container = document.getElementById('paypal-button-container');
+        if (container) {
+          container.innerHTML = '';
+          paypalButtons.render('#paypal-button-container').then(() => {
+            document.getElementById("result-message").innerHTML = '';
+            console.log('PayPal buttons rendered successfully');
+          }).catch((error) => {
+            console.error('PayPal render error:', error);
+            document.getElementById("result-message").innerHTML = 'Failed to load PayPal buttons. Please refresh the page.';
+          });
+        }
+      } catch (error) {
+        console.error('PayPal initialization error:', error);
+        document.getElementById("result-message").innerHTML = 'PayPal initialization failed. Please refresh the page.';
+      }
     }
 
     // Utility function to generate MD5 hash (for demo only)
@@ -701,8 +724,13 @@
     });
 
     document.getElementById('choose-paypal').addEventListener('click', () => {
-      alert('PayPal integration is currently disabled for demo purposes. Please use Paysera payment method.');
-      // showView('paypal-view');
+      showView('paypal-view');
+      // Clear any previous messages
+      document.getElementById("result-message").innerHTML = 'Loading PayPal...';
+      // Initialize PayPal when the view is shown
+      setTimeout(() => {
+        initializePayPal();
+      }, 200);
     });
 
     document.getElementById('back-to-info').addEventListener('click', () => {
