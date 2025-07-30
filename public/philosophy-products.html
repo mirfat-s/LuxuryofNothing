@@ -492,7 +492,7 @@
 
   <!-- PayPal SDK with your actual Client ID (no pay later) -->
   <!-- LIVE PayPal Client ID - Real payments enabled -->
-  <script src="https://www.paypal.com/sdk/js?client-id=Ada4aDxdU4UD5AiuL7jyJBr54vAMzcJApR9eHmzTsAYEsORvUlZNS2uKXv7aESWj2FCZYbflxo8NY2nKAUJcGtYfO9xUT_bxCNpkSM5JFbdQ2HtUW_p3Fr2aXupCW7r4tdypMBZG_Px9I7-MVXhOjLVzmAXyoOPF&buyer-country=US&currency=USD&components=buttons&enable-funding=venmo,card&disable-funding=paylater" data-sdk-integration-source="developer-studio"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=Ada4aDxdU4UD5AiuL7jyJBr54vAMzcJApR9eHmzTsAYEsORvUlZNS2uKXv7aESWj2FCZYbflxo8NY2nKAUJcGtYfO9xUT_bxCNpkSM5JFbdQ2HtUW_p3Fr2aXupCW7r4tdypMBZG_Px9I7-MVXhOjLVzmAXyoOPF&currency=USD&components=buttons&disable-funding=paylater" async defer></script>
   <!-- Paysera Integration -->
   <script src="/src/js/main.js"></script>
   <script src="/src/js/background-squares.js"></script>
@@ -578,14 +578,30 @@
 
     // Initialize PayPal
     function initializePayPal() {
-      // Check if PayPal SDK is loaded
-      if (typeof paypal === 'undefined') {
-        document.getElementById("result-message").innerHTML = 'PayPal SDK not loaded. Please refresh the page.';
-        return;
+      // Wait for PayPal SDK to load with retries
+      let retries = 0;
+      const maxRetries = 10;
+
+      function checkPayPalSDK() {
+        if (typeof window.paypal !== 'undefined') {
+          renderPayPalButtons();
+        } else if (retries < maxRetries) {
+          retries++;
+          document.getElementById("result-message").innerHTML = `Loading PayPal... (${retries}/${maxRetries})`;
+          setTimeout(checkPayPalSDK, 500);
+        } else {
+          document.getElementById("result-message").innerHTML =
+            'PayPal failed to load. Please check your internet connection and refresh the page.';
+        }
       }
 
+      checkPayPalSDK();
+    }
+
+    function renderPayPalButtons() {
+
       try {
-        const paypalButtons = paypal.Buttons({
+        const paypalButtons = window.paypal.Buttons({
           style: {
             shape: "rect",
             layout: "vertical",
@@ -726,11 +742,20 @@
     document.getElementById('choose-paypal').addEventListener('click', () => {
       showView('paypal-view');
       // Clear any previous messages
-      document.getElementById("result-message").innerHTML = 'Loading PayPal...';
-      // Initialize PayPal when the view is shown
-      setTimeout(() => {
+      const resultMsg = document.getElementById("result-message");
+      if (resultMsg) {
+        resultMsg.innerHTML = 'Initializing PayPal...';
+      }
+
+      // Check if PayPal SDK is available immediately
+      if (typeof window.paypal !== 'undefined') {
         initializePayPal();
-      }, 200);
+      } else {
+        // Wait a bit more for SDK to load
+        setTimeout(() => {
+          initializePayPal();
+        }, 1000);
+      }
     });
 
     document.getElementById('back-to-info').addEventListener('click', () => {
