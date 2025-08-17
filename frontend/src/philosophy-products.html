@@ -18,6 +18,12 @@
   <link rel="stylesheet" href="/src/css/why.css">
   <link rel="stylesheet" href="/src/css/luxury-details.css">
   <link rel="stylesheet" href="/src/css/page-transition.css">
+  
+  <!-- PayPal SDK -->
+  <script
+    src="https://www.paypal.com/sdk/js?client-id=BAAhPmDRBFrtk2WW9DrZ4c5WJrGCBTZ8D2zqLY0d06ozikaof0LS3FNpQ74Yr2u12xK5RFM5kJbZo1XLT0&currency=USD">
+  </script>
+  
   <style>
     .navbar {
       position: fixed;
@@ -304,6 +310,24 @@
         font-size: 1rem;
       }
     }
+
+    /* PayPal Button Styling */
+    .paypal-button-container {
+      margin: 2rem 0;
+      text-align: center;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .payment-note {
+      text-align: center;
+      color: var(--text-light);
+      font-size: var(--font-size-sm);
+      margin-top: 1rem;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
@@ -401,19 +425,15 @@
           <li>Delivery: Instantaneous</li>
         </ul>
         <p class="price">Price: 1,999 $</p>
-        <div class="payment-methods-section">
-          <h4>Choose Payment Method</h4>
-          <div class="payment-methods-grid">
-            <button type="button" class="payment-method-btn" id="choose-paysera">
-              <span>💳 Pay with Paysera</span>
-              <small>Credit cards, bank transfers</small>
-            </button>
-            <button type="button" class="payment-method-btn" id="choose-paypal">
-              <span>🅿️ Pay with PayPal</span>
-              <small>PayPal account or cards</small>
-            </button>
+                  <div class="payment-methods-section">
+            <h4>Choose Payment Method</h4>
+            <div class="payment-methods-grid">
+              <button type="button" class="payment-method-btn" id="choose-paypal">
+                <span>🅿️ Pay with PayPal</span>
+                <small>PayPal account or cards</small>
+              </button>
+            </div>
           </div>
-        </div>
         <div class="modal-buttons">
           <button class="btn-secondary" id="close-modal">
             <span>Close</span>
@@ -425,50 +445,23 @@
         <h3>Complete Your Purchase</h3>
         <p class="price">Total: 1,999 $</p>
 
-        <form id="paysera-payment-form" method="POST" action="https://bank.paysera.com/pay/">
-          <div class="payment-section">
-            <h3>Complete Payment with Paysera</h3>
+        <div class="payment-section">
+          <h3>Complete Payment with PayPal</h3>
+          
+          <!-- PayPal Hosted Button Container -->
+          <div id="paypal-container-R3VQPLVDZPUKC" class="paypal-button-container"></div>
+          
+          <p class="payment-note">Secure payment processed by PayPal</p>
+        </div>
 
-            <!-- Paysera Hidden Fields -->
-            <input type="hidden" name="projectid" value="YOUR_PAYSERA_PROJECT_ID">
-            <input type="hidden" name="orderid" value="" id="paysera-orderid">
-            <input type="hidden" name="amount" value="199900">
-            <input type="hidden" name="currency" value="USD">
-            <input type="hidden" name="country" value="AL">
-            <input type="hidden" name="accepturl" value="https://yourdomain.com/success">
-            <input type="hidden" name="cancelurl" value="https://yourdomain.com/cancel">
-            <input type="hidden" name="callbackurl" value="https://yourdomain.com/callback">
-            <input type="hidden" name="sign" value="" id="paysera-sign">
-            <input type="hidden" name="test" value="1">
-
-            <div class="form-group">
-              <label for="p_email">Email Address (for receipt)</label>
-              <input type="email" name="p_email" id="p_email" placeholder="your@email.com" required>
-            </div>
-          </div>
-
-          <div class="modal-buttons">
-            <button type="submit" class="cta-primary" id="paysera-submit">
-              <span>Continue to Paysera - 1,999 $</span>
-            </button>
-            <button type="button" class="btn-secondary" id="back-to-info">
-              <span>Back</span>
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <div id="paypal-view" class="hidden">
-        <h3>Pay with PayPal</h3>
-        <p class="price">Total: 1,999 $</p>
-        <div id="paypal-button-container"></div>
-        <p id="result-message"></p>
         <div class="modal-buttons">
-          <button type="button" class="btn-secondary" id="back-to-info-from-paypal">
+          <button type="button" class="btn-secondary" id="back-to-info">
             <span>Back</span>
           </button>
         </div>
       </div>
+
+
 
       <div id="success-view" class="hidden">
         <div class="success-content">
@@ -497,184 +490,16 @@
   <script src="/src/js/main.js"></script>
   <script src="/src/js/background-squares.js"></script>
   <script>
-    // Paysera configuration
-    const PAYSERA_PROJECT_ID = 'YOUR_PAYSERA_PROJECT_ID'; // Replace with your Paysera project ID
-    const PAYSERA_PASSWORD = 'YOUR_PAYSERA_PASSWORD'; // Replace with your Paysera password
-
-    // Initialize Paysera and PayPal when page loads
+    // Initialize PayPal hosted button when page loads
     document.addEventListener('DOMContentLoaded', function() {
-      initializePaysera();
-      if (typeof paypal !== 'undefined') {
-        initializePayPal();
-      }
+      // The hosted button will be rendered automatically by the script at the bottom
     });
 
-    function initializePaysera() {
-      // Set project ID
-      document.querySelector('input[name="projectid"]').value = PAYSERA_PROJECT_ID;
 
-      // Generate unique order ID
-      const orderId = 'ORDER_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-      document.getElementById('paysera-orderid').value = orderId;
 
-      // Add form submission handler
-      document.getElementById('paysera-payment-form').addEventListener('submit', function(e) {
-        e.preventDefault();
 
-        // Validate form for Paysera
-        if (!validatePayseraForm()) {
-          return;
-        }
 
-        // Generate signature and submit to Paysera
-        generatePayseraSignature();
 
-        // Show loading state
-        const submitBtn = document.getElementById('paysera-submit');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<span>Redirecting to Paysera...</span>';
-        submitBtn.disabled = true;
-
-        // Submit form after short delay
-        setTimeout(() => {
-          this.submit();
-        }, 1000);
-      });
-    }
-
-    function validatePayseraForm() {
-      const email = document.getElementById('p_email').value;
-
-      if (!email) {
-        alert('Please enter your email address');
-        return false;
-      }
-
-      if (!isValidEmail(email)) {
-        alert('Please enter a valid email address');
-        return false;
-      }
-
-      return true;
-    }
-
-    function generatePayseraSignature() {
-      // In a real implementation, this should be done on your server
-      // For now, we'll use a simple placeholder
-      // The signature is generated using MD5 hash of specific parameters + password
-
-      const orderId = document.getElementById('paysera-orderid').value;
-      const amount = '185000';
-      const currency = 'EUR';
-      const projectId = PAYSERA_PROJECT_ID;
-
-      // This is a simplified version - in production, generate this on your server
-      const signatureData = `${projectId}|${orderId}|${amount}|${currency}|${PAYSERA_PASSWORD}`;
-
-      // For demo purposes, we'll use a placeholder signature
-      // In production, calculate MD5 hash on your server
-      document.getElementById('paysera-sign').value = 'demo_signature_' + Date.now();
-    }
-
-    // Initialize PayPal
-    function initializePayPal() {
-      // Wait for PayPal SDK to load with retries
-      let retries = 0;
-      const maxRetries = 10;
-
-      function checkPayPalSDK() {
-        if (typeof window.paypal !== 'undefined') {
-          renderPayPalButtons();
-        } else if (retries < maxRetries) {
-          retries++;
-          document.getElementById("result-message").innerHTML = `Loading PayPal... (${retries}/${maxRetries})`;
-          setTimeout(checkPayPalSDK, 500);
-        } else {
-          document.getElementById("result-message").innerHTML =
-            'PayPal failed to load. Please check your internet connection and refresh the page.';
-        }
-      }
-
-      checkPayPalSDK();
-    }
-
-    function renderPayPalButtons() {
-
-      try {
-        const paypalButtons = window.paypal.Buttons({
-          style: {
-            shape: "rect",
-            layout: "vertical",
-            color: "gold",
-            label: "paypal",
-            height: 50
-          },
-          createOrder: function(data, actions) {
-            return actions.order.create({
-              purchase_units: [{
-                amount: {
-                  value: '1999.00',
-                  currency_code: 'USD'
-                },
-                description: 'Absolutely Nothing - Luxury of Nothing',
-                custom_id: 'LUXURY_NOTHING_' + Date.now()
-              }]
-            });
-          },
-          onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-              document.getElementById("result-message").innerHTML =
-                `✅ Payment Successful!<br>Transaction ID: ${details.id}<br>Thank you ${details.payer.name.given_name}!`;
-              console.log('PayPal payment completed:', details);
-              setTimeout(() => {
-                showView('success-view');
-              }, 2000);
-            }).catch(function(error) {
-              console.error('PayPal capture error:', error);
-              document.getElementById("result-message").innerHTML =
-                `❌ Payment processing failed. Please try again.`;
-            });
-          },
-          onError: function(err) {
-            console.error('PayPal error:', err);
-            document.getElementById("result-message").innerHTML = '❌ PayPal error occurred. Please try again.';
-          },
-          onCancel: function(data) {
-            console.log('PayPal payment cancelled:', data);
-            document.getElementById("result-message").innerHTML = '⚠️ Payment was cancelled.';
-          }
-        });
-
-        // Clear any existing content and render PayPal buttons
-        const container = document.getElementById('paypal-button-container');
-        if (container) {
-          container.innerHTML = '';
-          paypalButtons.render('#paypal-button-container').then(() => {
-            document.getElementById("result-message").innerHTML = '';
-            console.log('PayPal buttons rendered successfully');
-          }).catch((error) => {
-            console.error('PayPal render error:', error);
-            document.getElementById("result-message").innerHTML = 'Failed to load PayPal buttons. Please refresh the page.';
-          });
-        }
-      } catch (error) {
-        console.error('PayPal initialization error:', error);
-        document.getElementById("result-message").innerHTML = 'PayPal initialization failed. Please refresh the page.';
-      }
-    }
-
-    // Utility function to generate MD5 hash (for demo only)
-    function simpleMD5(str) {
-      // This is a very basic hash function for demo purposes only
-      // In production, use proper MD5 implementation on your server
-      let hash = 0;
-      for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // Convert to 32-bit integer
-      }
-      return Math.abs(hash).toString(16);
-    }
 
     function openModal() {
       const modal = document.getElementById('detail-modal');
@@ -688,28 +513,19 @@
       document.getElementById('detail-modal').classList.add('hidden');
       document.documentElement.classList.remove('modal-open');
       document.body.classList.remove('modal-open');
-      // Reset form
-      document.getElementById('paysera-payment-form').reset();
-      // Regenerate order ID
-      const orderId = 'ORDER_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-      document.getElementById('paysera-orderid').value = orderId;
     }
 
     function showView(viewId) {
       // Hide all views
       document.getElementById('product-info-view').classList.add('hidden');
       document.getElementById('payment-view').classList.add('hidden');
-      document.getElementById('paypal-view').classList.add('hidden');
       document.getElementById('success-view').classList.add('hidden');
 
       // Show selected view
       document.getElementById(viewId).classList.remove('hidden');
     }
 
-    // Validate email
-    function isValidEmail(email) {
-      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
+
 
     // Event listeners
     document.getElementById('detail-btn').addEventListener('click', (e) => {
@@ -735,27 +551,10 @@
       }
     });
 
-    document.getElementById('choose-paysera').addEventListener('click', () => {
-      showView('payment-view');
-    });
+
 
     document.getElementById('choose-paypal').addEventListener('click', () => {
-      showView('paypal-view');
-      // Clear any previous messages
-      const resultMsg = document.getElementById("result-message");
-      if (resultMsg) {
-        resultMsg.innerHTML = 'Initializing PayPal...';
-      }
-
-      // Check if PayPal SDK is available immediately
-      if (typeof window.paypal !== 'undefined') {
-        initializePayPal();
-      } else {
-        // Wait a bit more for SDK to load
-        setTimeout(() => {
-          initializePayPal();
-        }, 1000);
-      }
+      showView('payment-view'); // Show the view with hosted button instead
     });
 
     document.getElementById('back-to-info').addEventListener('click', () => {
@@ -766,9 +565,7 @@
       closeModal();
     });
 
-    document.getElementById('back-to-info-from-paypal').addEventListener('click', () => {
-      showView('product-info-view');
-    });
+
 
 
 
@@ -781,6 +578,68 @@
     });
 
     // Click outside to close functionality removed to prevent issues
+  </script>
+  
+  <!-- PayPal Hosted Button Rendering -->
+  <script>
+    // Wait for PayPal SDK to load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if PayPal SDK is loaded
+      if (typeof paypal !== 'undefined') {
+        renderPayPalHostedButton();
+      } else {
+        // Wait for SDK to load
+        const checkPayPal = setInterval(() => {
+          if (typeof paypal !== 'undefined') {
+            clearInterval(checkPayPal);
+            renderPayPalHostedButton();
+          }
+        }, 100);
+      }
+    });
+
+    function renderPayPalHostedButton() {
+      try {
+        console.log('Attempting to render PayPal hosted button...');
+        console.log('PayPal SDK available:', typeof paypal !== 'undefined');
+        console.log('Container element:', document.getElementById('paypal-container-R3VQPLVDZPUKC'));
+        
+        // Try hosted button first
+        if (typeof paypal.HostedButtons !== 'undefined') {
+          paypal.HostedButtons({
+            hostedButtonId: "R3VQPLVDZPUKC"
+          }).render("#paypal-container-R3VQPLVDZPUKC");
+          console.log('PayPal hosted button rendered successfully');
+        } else {
+          // Fallback to regular button
+          const button = paypal.Buttons({
+            createOrder: function(data, actions) {
+              return actions.order.create({
+                purchase_units: [{
+                  amount: {
+                    value: '1999.00',
+                    currency_code: 'USD'
+                  }
+                }]
+              });
+            },
+            onApprove: function(data, actions) {
+              return actions.order.capture().then(function(details) {
+                console.log('Payment completed:', details);
+                showView('success-view');
+              });
+            }
+          });
+          
+          button.render("#paypal-container-R3VQPLVDZPUKC");
+          console.log('PayPal regular button rendered successfully');
+        }
+      } catch (error) {
+        console.error('Error rendering PayPal hosted button:', error);
+        document.getElementById('paypal-container-R3VQPLVDZPUKC').innerHTML = 
+          '<p style="color: red;">PayPal button failed to load: ' + error.message + '</p>';
+      }
+    }
   </script>
 </body>
 </html>

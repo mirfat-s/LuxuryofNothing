@@ -1,0 +1,21 @@
+{
+  "name": "luxury-of-nothing-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Luxury of Nothing e-commerce",
+  "scripts": {
+    "dev": "live-server src --port=5000 --open=/index.html",
+    "build": "echo 'Build process not implemented yet'",
+    "preview": "live-server dist --port=5000 --open=/index.html"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  },
+  "keywords": [
+    "luxury",
+    "e-commerce",
+    "frontend",
+    "static-site"
+  ],
+  "author": "Luxury of Nothing",
+  "license": "MIT"
+} 
