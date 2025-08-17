@@ -20,9 +20,9 @@
   <link rel="stylesheet" href="/src/css/page-transition.css">
   
   <!-- PayPal SDK -->
-  <script
-    src="https://www.paypal.com/sdk/js?client-id=BAAhPmDRBFrtk2WW9DrZ4c5WJrGCBTZ8D2zqLY0d06ozikaof0LS3FNpQ74Yr2u12xK5RFM5kJbZo1XLT0&currency=USD">
-  </script>
+  <script 
+  src="https://www.paypal.com/sdk/js?client-id=BAAhPmDRBFrtk2WW9DrZ4c5WJrGCBTZ8D2zqLY0dO6ozikaof0LS3FNpQ74Yr2ul2xK5RFM5kJbZolXLT0&components=hosted-buttons&disable-funding=venmo&currency=USD">
+</script>
   
   <style>
     .navbar {
@@ -451,6 +451,12 @@
           <!-- PayPal Hosted Button Container -->
           <div id="paypal-container-R3VQPLVDZPUKC" class="paypal-button-container"></div>
           
+<script>
+  paypal.HostedButtons({
+    hostedButtonId: "R3VQPLVDZPUKC",
+  }).render("#paypal-container-R3VQPLVDZPUKC")
+</script>
+          
           <p class="payment-note">Secure payment processed by PayPal</p>
         </div>
 
@@ -465,7 +471,7 @@
 
       <div id="success-view" class="hidden">
         <div class="success-content">
-          <h3>🎉 Purchase Complete!</h3>
+          <h3>Purchase Complete!</h3>
           <p>Congratulations! You have successfully acquired absolutely nothing.</p>
           <p>Your receipt has been sent to your email.</p>
           <p class="success-message">Enjoy the luxury of nothingness.</p>
