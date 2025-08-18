@@ -1,0 +1,14 @@
+[build]
+  base    = "frontend"
+  publish = "src"
+  command = ""
+
+# Optional: SPA fallback (only if you use client-side routing)
+[[redirects]]
+  from = "/*"
+  to   = "/index.html"
+  status = 200
+
+# Optional: lock Node version for consistency
+[build.environment]
+  NODE_VERSION = "20"
