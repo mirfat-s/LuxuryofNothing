@@ -490,15 +490,7 @@
       document.body.classList.remove('modal-open');
     }
 
-    function showView(viewId) {
-      // Hide all views
-      document.getElementById('product-info-view').classList.add('hidden');
-      document.getElementById('payment-view').classList.add('hidden');
-      document.getElementById('success-view').classList.add('hidden');
-
-      // Show selected view
-      document.getElementById(viewId).classList.remove('hidden');
-    }
+    
 
 
 
@@ -509,7 +501,9 @@
       openModal();
     });
 
-    
+    document.getElementById('close-modal').addEventListener('click', () => {
+      closeModal();
+    });
 
     // Mobile X button close functionality
     document.querySelector('.modal-content').addEventListener('click', (e) => {
