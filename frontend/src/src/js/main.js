@@ -255,16 +255,34 @@
       });
     }
   })();
-  
 /* ===========================
-   MODAL -> PAYPAL ONLY (no auto-open)
+   MODAL -> PAYPAL ONLY
    =========================== */
 (() => {
   const modal   = document.getElementById('detail-modal');
-  const btnOpen = document.getElementById('detail-btn'); // your Buy button
+  const btnOpen = document.getElementById('detail-btn');
   const btnClose = document.getElementById('close-modal');
 
-  // PayPal hosted button renderer
+  // Prevent vertical letter stacking inside modal
+  const styleFix = document.createElement('style');
+  styleFix.textContent = `
+    #detail-modal, #detail-modal * {
+      writing-mode: horizontal-tb !important;
+      text-orientation: mixed !important;
+      white-space: normal !important;
+      word-break: normal !important;
+      overflow-wrap: anywhere;
+    }
+    .paypal-button-container { 
+      min-height: 60px; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+    }
+  `;
+  document.head.appendChild(styleFix);
+
+  // Render PayPal Hosted Button
   let triedRender = false;
   function ensurePayPalButton() {
     const sel = '#paypal-container-R3VQPLVDZPUKC';
@@ -275,20 +293,23 @@
       triedRender = true;
       try {
         window.paypal.HostedButtons({ hostedButtonId: 'R3VQPLVDZPUKC' }).render(sel);
-      } catch (e) {
-        console.warn('HostedButtons fallback failed:', e);
-      }
+      } catch (e) { console.warn('HostedButtons fallback failed:', e); }
     }
   }
 
-  // Open only when clicking Buy
-  btnOpen?.addEventListener('click', (e) => {
-    e.preventDefault();
-    modal?.classList.remove('hidden');
+  function openModalToPayment() {
+    if (!modal) return;
+    modal.classList.remove('hidden');
     document.documentElement.classList.add('modal-open');
     document.body.classList.add('modal-open');
     ensurePayPalButton();
-    setTimeout(ensurePayPalButton, 400); // double-check render
+    setTimeout(ensurePayPalButton, 400);
+  }
+
+  // Open modal only on Buy button click
+  btnOpen?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openModalToPayment();
   });
 
   // Close modal
