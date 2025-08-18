@@ -12,3 +12,27 @@
 # Optional: lock Node version for consistency
 [build.environment]
   NODE_VERSION = "20"
+[[headers]]
+  for = "/*"
+  [headers.values]
+  # blocks most script injection while allowing PayPal
+  Content-Security-Policy = """
+  default-src 'self';
+  script-src 'self' 'unsafe-inline' https://www.paypal.com https://www.paypalobjects.com;
+  style-src  'self' 'unsafe-inline';
+  img-src    'self' data: https:;
+  connect-src 'self' https://www.paypal.com https://*.paypal.com;
+  frame-src  https://www.paypal.com https://*.paypal.com;
+  form-action 'self' https://www.paypal.com;
+  base-uri 'self';
+  frame-ancestors 'none';
+  object-src 'none';
+  upgrade-insecure-requests;
+  """
+
+  Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+  X-Content-Type-Options    = "nosniff"
+  X-Frame-Options           = "DENY"
+  Referrer-Policy           = "strict-origin-when-cross-origin"
+  Permissions-Policy        = "geolocation=(), microphone=(), camera=()"
+  Cross-Origin-Opener-Policy = "same-origin-allow-popups"

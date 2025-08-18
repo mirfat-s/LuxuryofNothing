@@ -21,7 +21,7 @@
   
   <!-- PayPal SDK -->
   <script 
-  src="https://www.paypal.com/sdk/js?client-id=BAAhPmDRBFrtk2WW9DrZ4c5WJrGCBTZ8D2zqLY0dO6ozikaof0LS3FNpQ74Yr2ul2xK5RFM5kJbZolXLT0&components=hosted-buttons&disable-funding=venmo&currency=USD">
+  src="https://www.paypal.com/sdk/js?client-id=BAAhPmDRBFrtk2WW9DrZ4c5WJrGCBTZ8D2zqLY0dO6ozikaof0LS3FNpQ74Yr2ul2xK5RFM5kJbZolXLT0&components=hosted-buttons&disable-funding=venmo&currency=USD" defer>
 </script>
   
   <style>
@@ -425,15 +425,7 @@
           <li>Delivery: Instantaneous</li>
         </ul>
         <p class="price">Price: 1,999 $</p>
-                  <div class="payment-methods-section">
-            <h4>Choose Payment Method</h4>
-            <div class="payment-methods-grid">
-              <button type="button" class="payment-method-btn" id="choose-paypal">
-                <span>🅿️ Pay with PayPal</span>
-                <small>PayPal account or cards</small>
-              </button>
-            </div>
-          </div>
+                  
         <div class="modal-buttons">
           <button class="btn-secondary" id="close-modal">
             <span>Close</span>
@@ -449,13 +441,14 @@
           <h3>Complete Payment with PayPal</h3>
           
           <!-- PayPal Hosted Button Container -->
-          <div id="paypal-container-R3VQPLVDZPUKC" class="paypal-button-container"></div>
+          <div id="paypal-container-R3VQPLVDZPUKC" class="paypal-button-container">
           
-<script>
-  paypal.HostedButtons({
-    hostedButtonId: "R3VQPLVDZPUKC",
-  }).render("#paypal-container-R3VQPLVDZPUKC")
-</script>
+          <script>
+            paypal.HostedButtons({
+              hostedButtonId: "R3VQPLVDZPUKC",
+            }).render("#paypal-container-R3VQPLVDZPUKC")
+          </script>
+          </div>
           
           <p class="payment-note">Secure payment processed by PayPal</p>
         </div>

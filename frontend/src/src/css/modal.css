@@ -710,3 +710,14 @@ html.modal-open body {
   color: var(--text-medium);
   font-weight: 400;
 }
+
+/* Force normal horizontal text in the payment section */
+#paypal-container-R3VQPLVDZPUKC {
+  width: 100%;
+  max-width: 420px;
+  margin: 12px auto;
+  display: block;
+}
+#paypal-container-R3VQPLVDZPUKC [data-funding-source="card"],
+#paypal-container-R3VQPLVDZPUKC .paypal-button-tagline { display: none !important; }
+
