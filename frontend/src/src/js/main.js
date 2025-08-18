@@ -255,13 +255,21 @@
       });
     }
   })();
-/* ===========================
-   MODAL -> PAYPAL ONLY
+/* =========================== 
+   MODAL -> DIRECT TO PAYPAL VIEW 
    =========================== */
 (() => {
-  const modal   = document.getElementById('detail-modal');
+  const modal = document.getElementById('detail-modal');
   const btnOpen = document.getElementById('detail-btn');
   const btnClose = document.getElementById('close-modal');
+  const btnBack = document.getElementById('back-to-info');
+  const btnDone = document.getElementById('close-success');
+
+  const VIEWS = ['product-info-view','payment-view','success-view'];
+  const showView = (id) => {
+    VIEWS.forEach(v => document.getElementById(v)?.classList.add('hidden'));
+    document.getElementById(id)?.classList.remove('hidden');
+  };
 
   // Prevent vertical letter stacking inside modal
   const styleFix = document.createElement('style');
@@ -282,18 +290,20 @@
   `;
   document.head.appendChild(styleFix);
 
-  // Render PayPal Hosted Button
+  // Render hosted button IF container is empty and SDK is ready (safe fallback)
   let triedRender = false;
   function ensurePayPalButton() {
     const sel = '#paypal-container-R3VQPLVDZPUKC';
     const el = document.querySelector(sel);
     if (!el) return;
-    if (el.childElementCount > 0) return; // already rendered
+    if (el.childElementCount > 0) return; // already rendered by inline script
     if (!triedRender && window.paypal?.HostedButtons) {
       triedRender = true;
       try {
         window.paypal.HostedButtons({ hostedButtonId: 'R3VQPLVDZPUKC' }).render(sel);
-      } catch (e) { console.warn('HostedButtons fallback failed:', e); }
+      } catch (e) {
+        console.warn('HostedButtons fallback failed:', e);
+      }
     }
   }
 
@@ -302,18 +312,28 @@
     modal.classList.remove('hidden');
     document.documentElement.classList.add('modal-open');
     document.body.classList.add('modal-open');
+    showView('payment-view');
     ensurePayPalButton();
     setTimeout(ensurePayPalButton, 400);
   }
 
-  // Open modal only on Buy button click
+  // Intercept CTA click in capture phase to bypass the “method selection” page
   btnOpen?.addEventListener('click', (e) => {
     e.preventDefault();
+    e.stopImmediatePropagation();
+    e.stopPropagation();
     openModalToPayment();
+  }, true);
+
+  btnClose?.addEventListener('click', () => {
+    modal?.classList.add('hidden');
+    document.documentElement.classList.remove('modal-open');
+    document.body.classList.remove('modal-open');
   });
 
-  // Close modal
-  btnClose?.addEventListener('click', () => {
+  btnBack?.addEventListener('click', () => showView('product-info-view'));
+
+  btnDone?.addEventListener('click', () => {
     modal?.classList.add('hidden');
     document.documentElement.classList.remove('modal-open');
     document.body.classList.remove('modal-open');
@@ -321,6 +341,16 @@
 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      modal?.classList.add('hidden');
+      document.documentElement.classList.remove('modal-open');
+      document.body.classList.remove('modal-open');
+    }
+  });
+
+  document.querySelector('.modal-content')?.addEventListener('click', (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left, y = e.clientY - rect.top;
+    if (x > rect.width - 36 && y < 36) {
       modal?.classList.add('hidden');
       document.documentElement.classList.remove('modal-open');
       document.body.classList.remove('modal-open');
