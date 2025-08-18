@@ -10,6 +10,12 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+# env files (any folder)
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.sample
+
 
 # Build outputs
 dist/
