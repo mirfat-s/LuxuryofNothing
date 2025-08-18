@@ -1,20 +1,45 @@
-// Create floating orbs
-const orbCount = 10;
-for (let i = 0; i < orbCount; i++) {
-  const orb = document.createElement('div');
-  orb.className = 'orb';
-  const size = Math.random() * 20 + 10;
-  orb.style.setProperty('--duration', `${20 + Math.random() * 20}s`);
-  orb.style.setProperty('--delay', `${Math.random() * 10}s`);
-  const x = Math.random() * window.innerWidth;
-  const y = Math.random() * window.innerHeight;
-  const dx = (Math.random() - 0.5) * 50;
-  const dy = (Math.random() - 0.5) * 50;
-  orb.style.setProperty('--x', `${x}px`);
-  orb.style.setProperty('--y', `${y}px`);
-  orb.style.setProperty('--dx', `${dx}px`);
-  orb.style.setProperty('--dy', `${dy}px`);
-  orb.style.width = `${size}px`;
-  orb.style.height = `${size}px`;
-  document.body.appendChild(orb);
-}
+/* src/js/orbs.js — matches orb.css (uses --duration / --delay) */
+(() => {
+  // avoid duplicates
+  if (document.querySelector('.orbs-bg .orb')) return;
+
+  // host container (create if missing)
+  const host = document.querySelector('.orbs-bg') || (() => {
+    const d = document.createElement('div');
+    d.className = 'orbs-bg';
+    Object.assign(d.style, { position:'fixed', inset:'0', pointerEvents:'none', zIndex:'60', overflow:'hidden' });
+    document.body.appendChild(d);
+    return d;
+  })();
+
+  const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const count = prefersReduced ? 0 : (innerWidth < 480 ? 6 : innerWidth < 1024 ? 10 : 14);
+
+  function spawn() {
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < count; i++) {
+      const orb = document.createElement('div');
+      orb.className = 'orb';
+      const size = 10 + Math.random() * 20;
+      const x = Math.random() * innerWidth;
+      const y = Math.random() * innerHeight;
+      const dur = 24 + Math.random() * 18;
+      const delay = Math.random() * 10;
+
+      Object.assign(orb.style, { width:`${size}px`, height:`${size}px`, left:`${x}px`, top:`${y}px`, position:'fixed' });
+      orb.style.setProperty('--duration', `${dur}s`);
+      orb.style.setProperty('--delay', `${delay}s`);
+      frag.appendChild(orb);
+    }
+    host.appendChild(frag);
+  }
+
+  spawn();
+
+  // light respawn on resize
+  let to;
+  addEventListener('resize', () => {
+    clearTimeout(to);
+    to = setTimeout(() => { host.innerHTML = ''; spawn(); }, 120);
+  });
+})();

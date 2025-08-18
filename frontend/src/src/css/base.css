@@ -520,3 +520,15 @@ footer::before {
     transform: translateY(0);
   }
 }
+/* --- DECOR LAYERS: visible under UI, above marble+noise --- */
+#noise-overlay-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 40 !important; }
+.background-squares   { position: fixed; inset: 0; pointer-events: none; z-index: 50 !important; }
+.orbs-bg              { position: fixed; inset: 0; pointer-events: none; z-index: 60 !important; }
+
+/* UI stays on top */
+.page-transition-overlay { z-index: 900 !important; }
+.navbar, .modal { z-index: 1000 !important; }
+
+/* TEMP: make effects obvious while testing (dial back later) */
+.background-square { background: rgba(197,168,128,.10) !important; border: 1px solid rgba(197,168,128,.25) !important; opacity: .8 !important; }
+.orbs-bg .orb     { opacity: .55 !important; filter: blur(6px) !important; }
