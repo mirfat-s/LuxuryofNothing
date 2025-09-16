@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — Luxury of Nothing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Playfair+Display:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/css/base.css">
+  <link rel="stylesheet" href="/src/css/animations.css">
+  <link rel="stylesheet" href="/src/css/buttons.css">
+  <link rel="stylesheet" href="/src/css/product.css">
+  <link rel="stylesheet" href="/src/css/page-transition.css">
+  <link rel="stylesheet" href="/src/css/checkout.css">
+  <script src="https://www.paypal.com/sdk/js?client-id=BAAhPmDRBFrtk2WW9DrZ4c5WJrGCBTZ8D2zqLY0dO6ozikaof0LS3FNpQ74Yr2ul2xK5RFM5kJbZolXLT0&components=hosted-buttons&disable-funding=venmo&currency=USD" defer></script>
+</head>
+<body class="no-transition">
+  <div class="noise-overlay"></div>
+  <div class="gradient-bg"></div>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">Luxury of Nothing</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="philosophy-products.html" class="nav-link">Philosophy & Nothing</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <section class="checkout-section">
+      <div class="checkout-card animated-fade-in">
+        <h1 class="checkout-title">Complete Your Purchase</h1>
+        <p class="checkout-sub">Absolutely Nothing — <span class="price">1,999 $</span></p>
+        <div class="checkout-description">
+          <p>
+            Our product is Nothing — a conceptual luxury that cannot be owned,
+            touched, or consumed, yet carries value through its rarity and meaning.
+          </p>
+        </div>
+        <div id="paypal-container-R3VQPLVDZPUKC" class="paypal-button-container"></div>
+        <div id="payment-marks" class="payment-marks" aria-hidden="true"></div>
+        <p class="payment-note" style="text-align:center">Secure payment processed by PayPal</p>
+        <div class="back-row">
+          <a class="back-link" href="philosophy-products.html">← Back</a>
+          <a class="nav-link" href="index.html">Back to Home</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <p>&copy; 2024 Luxury of Nothing. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      function renderHosted(){
+        if (typeof paypal === 'undefined' || typeof paypal.HostedButtons === 'undefined') return;
+        paypal.HostedButtons({ hostedButtonId: 'R3VQPLVDZPUKC' }).render('#paypal-container-R3VQPLVDZPUKC');
+        // After render, try to extract any marks PayPal places and organize them
+        setTimeout(() => {
+          const marksHost = document.getElementById('payment-marks');
+          if (!marksHost) return;
+          // Look for images PayPal may inject near the button container
+          const container = document.getElementById('paypal-container-R3VQPLVDZPUKC');
+          const imgs = Array.from(container?.parentElement?.querySelectorAll('img') || []);
+          marksHost.innerHTML = '';
+          // Prefer PayPal, Visa, Mastercard order
+          const order = ['paypal', 'visa', 'mastercard'];
+          const picked = [];
+          order.forEach(key => {
+            const found = imgs.find(i => (i.alt||'').toLowerCase().includes(key) || (i.src||'').toLowerCase().includes(key));
+            if (found) picked.push(found);
+          });
+          // Add any remaining marks until we have 3 total
+          imgs.forEach(i => { if (picked.length < 3 && !picked.includes(i)) picked.push(i); });
+          picked.slice(0,3).forEach(img => {
+            const wrap = document.createElement('span');
+            wrap.className = 'mark';
+            const clone = img.cloneNode(true);
+            clone.removeAttribute('style');
+            wrap.appendChild(clone);
+            marksHost.appendChild(wrap);
+          });
+        }, 300);
+      }
+      if (typeof paypal === 'undefined') {
+        const t = setInterval(() => {
+          if (typeof paypal !== 'undefined') { clearInterval(t); renderHosted(); }
+        }, 100);
+      } else {
+        renderHosted();
+      }
+      if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+      window.scrollTo(0,0);
+    });
+  </script>
+</body>
+</html>
+
+

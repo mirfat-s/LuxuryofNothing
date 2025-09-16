@@ -328,12 +328,17 @@
       margin-top: 1rem;
       font-style: italic;
     }
+
+    /* Ensure decorative overlays never block clicks */
+    .noise-overlay,
+    .gradient-bg {
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
   <div class="noise-overlay"></div>
   <div class="gradient-bg"></div>
-  <div class="page-transition-overlay"></div>
   
   <nav class="navbar">
     <div class="nav-container">
@@ -359,12 +364,12 @@
               This is not a product in the traditional sense, but an invitation to
               embrace the luxury of nothingness.
             </p>
-            <button class="cta-primary animated-fade-in delay-2" id="detail-btn">
+            <a class="cta-primary animated-fade-in delay-2" id="detail-btn" href="checkout.html">
               <span>Procure Silence</span>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-            </button>
+            </a>
           </div>
         </div>
       </section>
@@ -412,45 +417,7 @@
     </main>
   </div>
 
-  <!-- Modal positioned outside main content for proper viewport centering -->
-  <div id="detail-modal" class="modal hidden" aria-modal="true" role="dialog">
-    <div class="modal-content">
-      <div id="payment-view" class="hidden">
-        <h3>Complete Your Purchase</h3>
-        <p class="price">Total: 1,999 $</p>
-
-        <div class="payment-section">
-          <h3>Complete Payment with PayPal</h3>
-          
-          <!-- PayPal Hosted Button Container -->
-         <div id="paypal-container-R3VQPLVDZPUKC" class="paypal-button-container"></div>
-
-          
-          <p class="payment-note">Secure payment processed by PayPal</p>
-        </div>
-
-        <div class="modal-buttons">
-          <button type="button" class="btn-secondary" id="back-to-info">
-            <span>Back</span>
-          </button>
-        </div>
-      </div>
-
-
-
-      <div id="success-view" class="hidden">
-        <div class="success-content">
-          <h3>Purchase Complete!</h3>
-          <p>Congratulations! You have successfully acquired absolutely nothing.</p>
-          <p>Your receipt has been sent to your email.</p>
-          <p class="success-message">Enjoy the luxury of nothingness.</p>
-          <button class="cta-primary" id="close-success">
-            <span>Embrace the Void</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+  
 
   <footer>
     <div class="footer-content">
@@ -494,29 +461,36 @@
 
 
 
-    // Event listeners
-    document.getElementById('detail-btn').addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      openModal();
+    // Go to PayPal hosted button; mark session so Back redirects home
+    document.addEventListener('DOMContentLoaded', function() {
+      const procureBtn = document.getElementById('detail-btn');
+      if (!procureBtn) return;
+      // No JS override; let anchor go to checkout.html
     });
 
-    document.getElementById('close-modal').addEventListener('click', () => {
-      closeModal();
-    });
+    (function(){
+      const closeBtn = document.getElementById('close-modal');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          closeModal();
+        });
+      }
+    })();
 
     // Mobile X button close functionality
-    document.querySelector('.modal-content').addEventListener('click', (e) => {
-      // Check if click is on the X button (::after pseudo-element area)
-      const rect = e.target.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
-
-      // X button is positioned at top-right corner
-      if (clickX > rect.width - 36 && clickY < 36) {
-        closeModal();
+    (function(){
+      const modalContent = document.querySelector('.modal-content');
+      if (modalContent) {
+        modalContent.addEventListener('click', (e) => {
+          const rect = e.target.getBoundingClientRect();
+          const clickX = e.clientX - rect.left;
+          const clickY = e.clientY - rect.top;
+          if (clickX > rect.width - 36 && clickY < 36) {
+            closeModal();
+          }
+        });
       }
-    });
+    })();
 
 
 

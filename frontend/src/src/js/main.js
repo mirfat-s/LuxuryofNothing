@@ -13,7 +13,7 @@
      HERO TITLE PARALLAX (if present)
      =========================== */
   (() => {
-    const titleLines = document.querySelectorAll('.title-line');
+const titleLines = document.querySelectorAll('.title-line');
     const heroTitle  = document.querySelector('.hero-title');
     if (!heroTitle || titleLines.length === 0) return;
   
@@ -30,41 +30,41 @@
         line.style.setProperty('--mouse-y', `${ny * 10 * k}px`);
         line.style.setProperty('--rotate-x', `${ny * 5 * k}deg`);
         line.style.setProperty('--rotate-y', `${nx * 5 * k}deg`);
-        line.classList.remove('parallax-1', 'parallax-2', 'parallax-3');
+      line.classList.remove('parallax-1', 'parallax-2', 'parallax-3');
         line.classList.add(`parallax-${i + 1}`);
-      });
     });
-  
+  });
+
     addEventListener('mouseleave', () => {
       titleLines.forEach((line) => {
-        line.style.setProperty('--mouse-x', '0px');
-        line.style.setProperty('--mouse-y', '0px');
-        line.style.setProperty('--rotate-x', '0deg');
-        line.style.setProperty('--rotate-y', '0deg');
-        line.classList.remove('parallax-1', 'parallax-2', 'parallax-3');
-      });
+      line.style.setProperty('--mouse-x', '0px');
+      line.style.setProperty('--mouse-y', '0px');
+      line.style.setProperty('--rotate-x', '0deg');
+      line.style.setProperty('--rotate-y', '0deg');
+      line.classList.remove('parallax-1', 'parallax-2', 'parallax-3');
     });
+  });
   })();
   
   /* ===========================
      PAGE TRANSITIONS
      =========================== */
-  function addPageTransition() {
-    let overlay = document.querySelector('.page-transition-overlay');
-    if (!overlay) {
-      overlay = document.createElement('div');
-      overlay.className = 'page-transition-overlay';
-      document.body.appendChild(overlay);
-    }
-    return overlay;
+function addPageTransition() {
+  let overlay = document.querySelector('.page-transition-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.className = 'page-transition-overlay';
+    document.body.appendChild(overlay);
   }
-  
-  function handlePageLinkTransition(e) {
+  return overlay;
+}
+
+function handlePageLinkTransition(e) {
     const href = e.currentTarget.getAttribute('href');
-    if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
-    e.preventDefault();
-    const overlay = addPageTransition();
-    overlay.classList.add('active');
+  if (!href || href.startsWith('#') || href.startsWith('javascript:')) return;
+  e.preventDefault();
+  const overlay = addPageTransition();
+  overlay.classList.add('active');
     setTimeout(() => (window.location.href = href), 400);
   }
   
@@ -79,36 +79,40 @@
       el.style.visibility = 'visible';
       el.classList.add('fade-in-triggered');
     });
-  });
-  
-  window.addEventListener('DOMContentLoaded', () => {
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+    if (document.body.classList.contains('no-transition')) {
+      // Skip all page-transition effects on pages that opt-out
+      return;
+    }
     // Only anchors — your CTA is a button and is handled below
     document.querySelectorAll('a.nav-link, a.cta-primary').forEach(a => {
       a.addEventListener('click', handlePageLinkTransition);
     });
   
     const main = document.querySelector('.main-content') || document.body;
-    document.body.classList.add('page-transitioning');
+  document.body.classList.add('page-transitioning');
     main.classList.add('page-enter');
-    setTimeout(() => {
+  setTimeout(() => {
       main.classList.add('page-enter-active');
       setTimeout(() => document.body.classList.remove('page-transitioning'), 700);
-    }, 30);
-  
-    document.querySelectorAll('.animated-fade-in').forEach(el => {
-      el.style.visibility = 'visible';
-      el.classList.add('fade-in-triggered');
-    });
-  
-    setTimeout(() => {
-      document.body.style.opacity = '1';
-      document.body.style.visibility = 'visible';
+  }, 30);
+
+  document.querySelectorAll('.animated-fade-in').forEach(el => {
+    el.style.visibility = 'visible';
+    el.classList.add('fade-in-triggered');
+  });
+
+  setTimeout(() => {
+    document.body.style.opacity = '1';
+    document.body.style.visibility = 'visible';
       const m = document.querySelector('.main-content') || document.body;
       m.style.opacity = '1';
       m.style.visibility = 'visible';
-    }, 100);
-  });
-  
+  }, 100);
+});
+
   /* ===========================
      DECORATIVE BACKGROUND BOOT
      (noise overlay, background squares, orbs)
@@ -319,6 +323,8 @@
 
   // Intercept CTA click in capture phase to bypass the “method selection” page
   btnOpen?.addEventListener('click', (e) => {
+    // If the modal doesn't exist on this page, allow normal navigation
+    if (!modal) return;
     e.preventDefault();
     e.stopImmediatePropagation();
     e.stopPropagation();
