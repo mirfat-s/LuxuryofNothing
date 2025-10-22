@@ -215,6 +215,11 @@
     }
     
     @media (max-width: 768px) {
+      /* Reduce padding-top for tablets since navbar is smaller */
+      .main-content {
+        padding-top: 60px;
+      }
+
       .product-container {
         grid-template-columns: 1fr;
         gap: var(--space-2xl);
@@ -223,7 +228,7 @@
       }
 
       .product-image-large img {
-        max-width: 800px;
+        max-width: 400px;
       }
 
       .product-title {
@@ -255,6 +260,11 @@
         display: none;
       }
 
+      /* Remove padding-top from main-content since navbar is hidden */
+      .main-content {
+        padding-top: 0;
+      }
+
       .product-section {
         padding-top: var(--space-xl);
       }
@@ -269,7 +279,7 @@
       }
 
       .product-image-large img {
-        max-width: 180px;
+        max-width: 280px;
         margin-bottom: var(--space-xs);
       }
 
