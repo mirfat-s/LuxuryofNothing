@@ -19,7 +19,8 @@
   Content-Security-Policy = """
   default-src 'self';
   script-src 'self' 'unsafe-inline' https://www.paypal.com https://www.paypalobjects.com;
-  style-src  'self' 'unsafe-inline';
+  style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
+  font-src   'self' https://fonts.gstatic.com;
   img-src    'self' data: https:;
   connect-src 'self' https://www.paypal.com https://*.paypal.com;
   frame-src  https://www.paypal.com https://*.paypal.com;
