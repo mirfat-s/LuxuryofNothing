@@ -4,75 +4,451 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="verify-paysera" content="1ab88174dfbec4cbf64764d0f98b92d1">
-  <title>Luxury of Nothing</title>
+  <title>Luxury of Nothing — Absolutely Nothing, Exquisitely Made</title>
+  <meta name="description" content="The world's finest nothing. Zero materials, zero compromise. An exclusive absence for those who already have everything.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Playfair+Display:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/src/css/base.css">
-  <link rel="stylesheet" href="/src/css/animations.css">
-  <link rel="stylesheet" href="/src/css/buttons.css">
-  <link rel="stylesheet" href="/src/css/cursor.css">
-  <link rel="stylesheet" href="/src/css/orb.css">
-  <link rel="stylesheet" href="/src/css/modal.css">
-  <link rel="stylesheet" href="/src/css/product.css">
-  <link rel="stylesheet" href="/src/css/why.css">
-  <link rel="stylesheet" href="/src/css/luxury-details.css">
-  <link rel="stylesheet" href="/src/css/page-transition.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/css/lux.css">
 </head>
-<body class="landing-page-body">
-  <div class="noise-overlay"></div>
-  <div class="gradient-bg"></div>
-  
-  <nav class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="nav-logo">Luxury of Nothing</a>
+<body>
+
+  <!-- Ambient layers -->
+  <div class="wash" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- Entrance: a beat of nothing, then the name -->
+  <div class="preloader" aria-hidden="true">
+    <div class="preloader-word">Luxury of Nothing</div>
+    <div class="preloader-line"></div>
+    <div class="preloader-hint">Preparing the void</div>
+  </div>
+
+  <!-- Custom cursor -->
+  <div class="cursor-ring" aria-hidden="true"><span class="cursor-label"></span></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+
+  <!-- Scroll progress -->
+  <div class="scroll-progress" aria-hidden="true"><div class="bar"></div></div>
+
+  <!-- Page transition veil -->
+  <div class="veil" aria-hidden="true"><span class="veil-word">nothing awaits&hellip;</span></div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo" data-no-veil>Luxury <em>of</em> Nothing</a>
       <div class="nav-links">
-        <a href="index.html" class="nav-link active">Home</a>
-        <a href="philosophy-products.html" class="nav-link">Philosophy & Nothing</a>
+        <a href="#object" class="nav-link u-line hide-mobile">The Object</a>
+        <a href="#editions" class="nav-link u-line hide-mobile">Editions</a>
+        <a href="philosophy-products.html" class="nav-link u-line hide-mobile">Philosophy</a>
+        <button class="nav-cart u-line" type="button" aria-label="Open your void">
+          <svg width="15" height="16" viewBox="0 0 15 16" fill="none" aria-hidden="true">
+            <path d="M2 5.5h11l-.9 9H2.9l-.9-9z" stroke="currentColor" stroke-width="1.1"/>
+            <path d="M4.8 5.2V4a2.7 2.7 0 0 1 5.4 0v1.2" stroke="currentColor" stroke-width="1.1"/>
+          </svg>
+          <span>Void</span>
+          <span class="nav-cart-count">0</span>
+        </button>
       </div>
     </div>
   </nav>
-  
-  <!-- Landing Page -->
-  <section class="landing-page">
-    <div class="hero">
+
+  <main>
+
+    <!-- ======================= HERO ======================= -->
+    <header class="hero">
+      <div class="hero-depth" aria-hidden="true">
+        <div class="hero-plane hero-ring r1" data-depth="0.12"></div>
+        <div class="hero-plane hero-ring r2" data-depth="0.22"></div>
+        <div class="hero-plane hero-ring r3" data-depth="0.34"></div>
+        <div class="hero-plane hero-orb o1" data-depth="0.5"></div>
+        <div class="hero-plane hero-orb o2" data-depth="0.7"></div>
+        <div class="hero-plane hero-orb o3" data-depth="0.9"></div>
+      </div>
+
       <div class="hero-content">
-        <h1 class="hero-title luxury-heading">
-          <span class="title-line luxury-line">Luxury</span>
-          <span class="title-line">of</span>
-          <span class="title-line nothing-line">Nothing</span>
+        <p class="hero-kicker hero-stagger" data-fade>Maison de Rien &mdash; Est. MMXXIV</p>
+        <h1 class="hero-title">
+          <span class="h-line"><span>Luxury</span></span>
+          <span class="h-line"><span class="of">of</span></span>
+          <span class="h-line"><span>Nothing</span></span>
         </h1>
-        <p class="hero-subtitle luxury-subheading">Where absence becomes the ultimate luxury</p>
-        <div class="hero-cta">
-          <a href="philosophy-products.html" class="cta-primary luxury-hover-lift">
-            <span>Enter</span>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <p class="hero-sub hero-stagger" data-fade>Where absence becomes the ultimate acquisition.</p>
+        <div class="hero-cta-row hero-stagger" data-fade>
+          <a href="#object" class="btn btn-solid" data-magnetic="0.4" data-cursor="Behold">
+            <span class="btn-label">Behold the Object</span>
+            <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 5v14m0 0l-6-6m6 6l6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
+          </a>
+          <a href="philosophy-products.html" class="btn btn-ghost" data-magnetic="0.3">
+            <span class="btn-label">The Philosophy</span>
           </a>
         </div>
       </div>
-      <div class="hero-visual">
-        <div class="floating-elements">
-          <div class="floating-orb orb-1"></div>
-          <div class="floating-orb orb-2"></div>
-          <div class="floating-orb orb-3"></div>
+
+      <div class="hero-scroll-cue hero-stagger" data-fade aria-hidden="true">
+        <span>Descend</span>
+        <span class="cue-track"></span>
+      </div>
+    </header>
+
+    <!-- ==================== MANIFESTO ===================== -->
+    <section class="section manifesto" id="manifesto">
+      <div class="ghost-word" data-parallax="0.4" aria-hidden="true">NOTHING</div>
+      <div class="container">
+        <div class="manifesto-body">
+          <p class="eyebrow" data-fade>The Manifesto</p>
+          <p class="manifesto-line" data-split>You have acquired everything. Homes, vehicles, horology, art.</p>
+          <p class="manifesto-line" data-split>And yet a single omission remains in even the finest collection: <em>the absence of anything at all.</em></p>
+          <p class="manifesto-line" data-split>We are proud to correct this. Meticulously sourced from the space between things, our nothing is the purest ever offered for sale.</p>
+          <blockquote class="manifesto-quote" data-fade>
+            &ldquo;In a world inundated with excess, nothing is the ultimate luxury.&rdquo;
+            <cite>House Doctrine, Vol. 0</cite>
+          </blockquote>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <div class="page-transition-overlay"></div>
+    <!-- ===================== STATS ======================== -->
+    <section class="stats">
+      <div class="container">
+        <div class="stats-grid" data-fade-group>
+          <div class="stat" data-fade>
+            <div class="stat-value"><span data-count-from="247">247</span><sup>g</sup></div>
+            <div class="stat-label">Grams of Material</div>
+          </div>
+          <div class="stat" data-fade>
+            <div class="stat-value"><span data-count-from="1200">1200</span><sup>h</sup></div>
+            <div class="stat-label">Hours of Assembly</div>
+          </div>
+          <div class="stat" data-fade>
+            <div class="stat-value"><span data-count-from="86">86</span><sup>&nbsp;</sup></div>
+            <div class="stat-label">Possible Regrets</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <footer>
-    <div class="footer-content">
-      <p>&copy; 2024 Luxury of Nothing. All rights reserved.</p>
+    <!-- ==================== THE OBJECT ==================== -->
+    <section class="section object-section" id="object">
+      <div class="container">
+        <div class="object-grid">
+
+          <div class="stage" data-cursor="Rotate">
+            <div class="stage-backdrop" aria-hidden="true"></div>
+            <div class="stage-floorline" aria-hidden="true"></div>
+            <div class="scene-viewport" aria-hidden="true">
+              <div class="scene">
+                <div class="vitrine">
+                  <div class="v-face v-front"></div>
+                  <div class="v-face v-back"></div>
+                  <div class="v-face v-left"></div>
+                  <div class="v-face v-right"></div>
+                  <div class="v-face v-top"></div>
+                  <div class="v-void"></div>
+                </div>
+                <div class="plinth">
+                  <div class="p-face p-top"></div>
+                  <div class="p-face p-side p-front"></div>
+                  <div class="p-face p-side p-back"></div>
+                  <div class="p-face p-side p-left"></div>
+                  <div class="p-face p-side p-right"></div>
+                  <div class="p-plate"><span>N&deg; 000 &mdash; Nothing</span></div>
+                </div>
+                <div class="stage-shadow"></div>
+              </div>
+            </div>
+            <p class="stage-hint">Drag to inspect the emptiness</p>
+          </div>
+
+          <div class="object-info">
+            <p class="eyebrow" data-fade>The Object</p>
+            <h2 class="display" style="font-size: clamp(2.2rem, 4.5vw, 4rem);" data-split>Absolutely Nothing, in a case of <em>museum glass</em></h2>
+            <p class="lede" data-fade>An exclusive absence, tailored for those who already have everything. Each unit is individually never made, inspected by our master artisans, and sealed under vitrine to preserve its perfect emptiness.</p>
+
+            <div class="spec-list" data-fade-group>
+              <div class="spec-row" data-fade><span class="spec-key">Material</span><span class="spec-val">None, ethically sourced</span></div>
+              <div class="spec-row" data-fade><span class="spec-key">Weight</span><span class="spec-val">0.000 g (certified)</span></div>
+              <div class="spec-row" data-fade><span class="spec-key">Dimensions</span><span class="spec-val">Bespoke to your emptiness</span></div>
+              <div class="spec-row" data-fade><span class="spec-key">Provenance</span><span class="spec-val">The void, single origin</span></div>
+              <div class="spec-row" data-fade><span class="spec-key">Care</span><span class="spec-val">Requires nothing. Ever.</span></div>
+            </div>
+
+            <div class="price-row" data-fade>
+              <span class="price">$1,999</span>
+              <span class="price-note">Nothing ships free, worldwide</span>
+            </div>
+
+            <div class="object-cta-row" data-fade>
+              <button class="btn btn-solid" type="button" data-magnetic="0.4" data-cursor="Add"
+                      data-add-to-cart data-id="nothing-classic" data-name="Absolutely Nothing"
+                      data-sub="The Original &mdash; Vitrine Edition" data-price="1999">
+                <span class="btn-label">Add to the Void</span>
+                <span class="btn-check" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </button>
+              <a href="checkout.html" class="btn btn-ghost" data-magnetic="0.3">
+                <span class="btn-label">Acquire Immediately</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================== CERTIFICATE ===================== -->
+    <section class="certificate-section" id="certificate">
+      <div class="certificate-sticky">
+        <div class="certificate-head">
+          <p class="eyebrow" data-fade style="justify-content:center;">Documentation</p>
+          <h2 class="display" style="font-size: clamp(1.9rem, 4vw, 3.4rem);" data-split>Your proof of <em>absence</em></h2>
+        </div>
+
+        <div class="cert-frame">
+          <svg class="cert-svg" viewBox="0 0 760 560" role="img" aria-label="Certificate of Absence for one unit of Absolutely Nothing">
+            <rect class="cert-paper" x="8" y="8" width="744" height="544" rx="2"/>
+            <rect class="draw d-outer" pathLength="1" x="30" y="30" width="700" height="500" fill="none" stroke="#131210" stroke-width="1.4"/>
+            <rect class="draw d-inner" pathLength="1" x="44" y="44" width="672" height="472" fill="none" stroke="#C4A572" stroke-width="0.8"/>
+
+            <text class="t-ui appear a-head" x="380" y="108" text-anchor="middle" font-size="12">CERTIFICATE OF AUTHENTICITY</text>
+            <text class="t-head appear a-head" x="380" y="172" text-anchor="middle" font-size="46">Absolutely Nothing</text>
+            <line class="draw d-rule" pathLength="1" x1="290" y1="200" x2="470" y2="200" stroke="#C4A572" stroke-width="1"/>
+
+            <text class="t-serif appear a-body" x="380" y="252" text-anchor="middle" font-size="20">This document certifies that the bearer is the sole and rightful owner</text>
+            <text class="t-serif appear a-body" x="380" y="284" text-anchor="middle" font-size="20">of one (1) unit of nothing whatsoever,</text>
+            <text class="t-serif appear a-body" x="380" y="316" text-anchor="middle" font-size="20">in perpetuity, throughout the known universe.</text>
+            <text class="t-num appear a-body" x="380" y="372" text-anchor="middle" font-size="13">EDITION &#8470; 000 &mdash; OF AN INFINITE RUN OF ONE</text>
+
+            <g class="g-seal appear">
+              <circle cx="592" cy="446" r="46" fill="none" stroke="#C4A572" stroke-width="1.2"/>
+              <circle cx="592" cy="446" r="37" fill="none" stroke="#C4A572" stroke-width="0.7" stroke-dasharray="2 3"/>
+              <text x="592" y="456" text-anchor="middle" font-size="30" fill="#9A8B6A" font-family="Georgia, serif">&empty;</text>
+              <g stroke="#C4A572" stroke-width="0.8">
+                <line x1="592" y1="392" x2="592" y2="400"/>
+                <line x1="592" y1="492" x2="592" y2="500"/>
+                <line x1="538" y1="446" x2="546" y2="446"/>
+                <line x1="638" y1="446" x2="646" y2="446"/>
+              </g>
+            </g>
+
+            <path class="draw d-sig" pathLength="1" d="M110 452 C 130 428, 148 462, 166 440 S 200 424, 214 446 S 246 452, 262 436" fill="none" stroke="#131210" stroke-width="1.3" stroke-linecap="round"/>
+            <line class="draw d-sig" pathLength="1" x1="100" y1="468" x2="286" y2="468" stroke="#131210" stroke-width="0.8"/>
+            <text class="t-ui appear a-foot" x="193" y="488" text-anchor="middle" font-size="9">DIRECTEUR DU N&Eacute;ANT</text>
+            <text class="t-ui appear a-foot" x="380" y="530" text-anchor="middle" font-size="9">ISSUED BY THE HOUSE &mdash; EST. MMXXIV &mdash; VOID WHERE ANYTHING EXISTS</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== EDITIONS ====================== -->
+    <section class="editions-section" id="editions">
+      <div class="editions-pin">
+        <div class="container editions-head">
+          <p class="eyebrow" data-fade>The Collection</p>
+          <h2 class="display" style="font-size: clamp(2rem, 4.5vw, 4rem);" data-split>Five editions of <em>emptiness</em></h2>
+          <div class="editions-progress" aria-hidden="true"><div class="ep-bar"></div></div>
+        </div>
+
+        <div class="h-wrap">
+          <div class="h-track">
+
+            <article class="edition-card" data-tilt="6">
+              <div class="edition-visual" data-cursor="View">
+                <div class="ev-field" style="background: radial-gradient(ellipse 90% 70% at 30% 25%, rgba(196,165,114,0.35), transparent 60%), linear-gradient(160deg, #201d18, #131210);"></div>
+                <span class="ev-num">01</span>
+              </div>
+              <div class="edition-meta">
+                <div>
+                  <h3 class="edition-name">Nothing Noir</h3>
+                  <p class="edition-sub">The darkness between stars</p>
+                </div>
+                <span class="edition-price">$1,999</span>
+              </div>
+              <div class="edition-actions">
+                <button class="btn btn-void" type="button" data-cursor="Add"
+                        data-add-to-cart data-id="noir" data-name="Nothing Noir"
+                        data-sub="Edition 01 &mdash; The darkness between stars" data-price="1999">
+                  <span class="btn-label">Add to the Void</span>
+                  <span class="btn-check" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+              </div>
+            </article>
+
+            <article class="edition-card" data-tilt="6">
+              <div class="edition-visual" data-cursor="View">
+                <div class="ev-field" style="background: radial-gradient(ellipse 80% 60% at 70% 30%, rgba(216,196,156,0.3), transparent 55%), linear-gradient(200deg, #1e1a14, #131210);"></div>
+                <span class="ev-num">02</span>
+              </div>
+              <div class="edition-meta">
+                <div>
+                  <h3 class="edition-name">Silence No. 5</h3>
+                  <p class="edition-sub">An eau de rien, unbottled</p>
+                </div>
+                <span class="edition-price">$2,999</span>
+              </div>
+              <div class="edition-actions">
+                <button class="btn btn-void" type="button" data-cursor="Add"
+                        data-add-to-cart data-id="silence" data-name="Silence No. 5"
+                        data-sub="Edition 02 &mdash; An eau de rien, unbottled" data-price="2999">
+                  <span class="btn-label">Add to the Void</span>
+                  <span class="btn-check" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+              </div>
+            </article>
+
+            <article class="edition-card" data-tilt="6">
+              <div class="edition-visual" data-cursor="View">
+                <div class="ev-field" style="background: radial-gradient(ellipse 100% 80% at 50% 85%, rgba(196,165,114,0.28), transparent 60%), linear-gradient(180deg, #17150f, #131210);"></div>
+                <span class="ev-num">03</span>
+              </div>
+              <div class="edition-meta">
+                <div>
+                  <h3 class="edition-name">Vide &Eacute;ternel</h3>
+                  <p class="edition-sub">Aged nowhere for a century</p>
+                </div>
+                <span class="edition-price">$4,999</span>
+              </div>
+              <div class="edition-actions">
+                <button class="btn btn-void" type="button" data-cursor="Add"
+                        data-add-to-cart data-id="vide" data-name="Vide &Eacute;ternel"
+                        data-sub="Edition 03 &mdash; Aged nowhere for a century" data-price="4999">
+                  <span class="btn-label">Add to the Void</span>
+                  <span class="btn-check" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+              </div>
+            </article>
+
+            <article class="edition-card" data-tilt="6">
+              <div class="edition-visual" data-cursor="View">
+                <div class="ev-field" style="background: radial-gradient(ellipse 70% 55% at 25% 70%, rgba(216,196,156,0.24), transparent 58%), linear-gradient(140deg, #1b1812, #131210);"></div>
+                <span class="ev-num">04</span>
+              </div>
+              <div class="edition-meta">
+                <div>
+                  <h3 class="edition-name">The Unmade</h3>
+                  <p class="edition-sub">Hand-unassembled in Geneva</p>
+                </div>
+                <span class="edition-price">$7,499</span>
+              </div>
+              <div class="edition-actions">
+                <button class="btn btn-void" type="button" data-cursor="Add"
+                        data-add-to-cart data-id="unmade" data-name="The Unmade"
+                        data-sub="Edition 04 &mdash; Hand-unassembled in Geneva" data-price="7499">
+                  <span class="btn-label">Add to the Void</span>
+                  <span class="btn-check" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+              </div>
+            </article>
+
+            <article class="edition-card" data-tilt="6">
+              <div class="edition-visual" data-cursor="View">
+                <div class="ev-field" style="background: radial-gradient(ellipse 85% 65% at 60% 20%, rgba(196,165,114,0.4), transparent 52%), linear-gradient(220deg, #221e16, #131210);"></div>
+                <span class="ev-num">05</span>
+              </div>
+              <div class="edition-meta">
+                <div>
+                  <h3 class="edition-name">Absence Absolue</h3>
+                  <p class="edition-sub">The flagship. Contains the least.</p>
+                </div>
+                <span class="edition-price">$12,000</span>
+              </div>
+              <div class="edition-actions">
+                <button class="btn btn-void" type="button" data-cursor="Add"
+                        data-add-to-cart data-id="absolue" data-name="Absence Absolue"
+                        data-sub="Edition 05 &mdash; The flagship. Contains the least." data-price="12000">
+                  <span class="btn-label">Add to the Void</span>
+                  <span class="btn-check" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </button>
+              </div>
+            </article>
+
+            <div class="editions-endcap">
+              <p>Further editions will not be announced, produced, or shipped. Collect them all.</p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== RESERVE ====================== -->
+    <section class="section reserve-section" id="reserve">
+      <div class="container">
+        <p class="eyebrow" data-fade style="justify-content:center;">Private Clientele</p>
+        <h2 class="display" style="font-size: clamp(2rem, 4.5vw, 4rem);" data-split>Reserve your share of <em>nothing</em></h2>
+        <p class="lede" data-fade style="max-width: 560px; margin: 2rem auto 0;">Join the waiting list for editions that will never exist. Our concierge will contact you about nothing, at your convenience.</p>
+
+        <form class="reserve-form" novalidate>
+          <div class="field">
+            <input type="email" id="reserve-email" name="email" autocomplete="email" required>
+            <label for="reserve-email">Your email address</label>
+            <span class="field-line"></span>
+          </div>
+          <button class="btn btn-solid" type="submit" data-magnetic="0.4" data-cursor="Reserve">
+            <span class="btn-label">Generate Certificate</span>
+            <span class="btn-check" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M4 12.5l5 5L20 6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====================== FOOTER ====================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-word" aria-hidden="true">NOTHING</div>
+      <div class="footer-grid">
+        <div class="footer-links">
+          <a href="philosophy-products.html" class="footer-link u-line">Philosophy</a>
+          <a href="checkout.html" class="footer-link u-line">Acquire</a>
+          <a href="#reserve" class="footer-link u-line">Concierge</a>
+        </div>
+        <p class="footer-fine">&copy; MMXXVI Luxury of Nothing. No rights necessary.</p>
+      </div>
     </div>
   </footer>
 
+  <!-- Cart drawer -->
+  <div class="cart-backdrop" aria-hidden="true"></div>
+  <aside class="cart-drawer" aria-hidden="true" aria-label="Your void" data-lenis-prevent>
+    <div class="cart-head">
+      <h2 class="cart-title">Your Void</h2>
+      <button class="cart-close" type="button" aria-label="Close">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="cart-items"></div>
+    <div class="cart-foot">
+      <div class="cart-total-row">
+        <span class="cart-total-label">Total absence</span>
+        <span class="cart-total-value">$0</span>
+      </div>
+      <a href="checkout.html" class="btn btn-solid">
+        <span class="btn-label">Proceed to Acquisition</span>
+      </a>
+      <p class="cart-fine">Delivery is instantaneous, as there is nothing to deliver.</p>
+    </div>
+  </aside>
 
-  <script src="/src/js/main.js"></script>
-  <script src="/src/js/background-squares.js"></script>
+  <!-- Toasts -->
+  <div class="toast-stack" aria-live="polite"></div>
 
+  <script src="/src/js/vendor/gsap.min.js" defer></script>
+  <script src="/src/js/vendor/ScrollTrigger.min.js" defer></script>
+  <script src="/src/js/vendor/lenis.min.js" defer></script>
+  <script src="/src/js/lux.js" defer></script>
 </body>
 </html>

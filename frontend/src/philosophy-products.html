@@ -4,593 +4,157 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="verify-paysera" content="1ab88174dfbec4cbf64764d0f98b92d1">
-  <title>Philosophy & Collection — Luxury of Nothing</title>
+  <title>The Philosophy — Luxury of Nothing</title>
+  <meta name="description" content="The philosophy of nothing: why intentional absence is the last true luxury.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=Playfair+Display:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/src/css/base.css">
-  <link rel="stylesheet" href="/src/css/animations.css">
-  <link rel="stylesheet" href="/src/css/buttons.css">
-  <link rel="stylesheet" href="/src/css/cursor.css">
-  <link rel="stylesheet" href="/src/css/orb.css">
-  <link rel="stylesheet" href="/src/css/modal.css">
-  <link rel="stylesheet" href="/src/css/product.css">
-  <link rel="stylesheet" href="/src/css/why.css">
-  <link rel="stylesheet" href="/src/css/luxury-details.css">
-  <link rel="stylesheet" href="/src/css/page-transition.css">
-  
-  <!-- PayPal SDK -->
-  <script 
-  src="https://www.paypal.com/sdk/js?client-id=BAAhPmDRBFrtk2WW9DrZ4c5WJrGCBTZ8D2zqLY0dO6ozikaof0LS3FNpQ74Yr2ul2xK5RFM5kJbZolXLT0&components=hosted-buttons&disable-funding=venmo&currency=USD" defer>
-</script>
-  
-  <style>
-    .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background: rgba(248, 247, 244, 0.95);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--marble-vein);
-      z-index: 1000;
-      padding: 1rem 0;
-    }
-    
-    .nav-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--text-dark);
-      text-decoration: none;
-    }
-    
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-    }
-    
-    .nav-link {
-      color: var(--text-medium);
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
-    }
-    
-    .nav-link:hover,
-    .nav-link.active {
-      color: var(--gold);
-    }
-    
-    .main-content {
-      padding-top: 80px;
-    }
-    
-    .product-section {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background:
-        radial-gradient(circle at 20% 80%, rgba(196, 165, 114, 0.06) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(196, 165, 114, 0.04) 0%, transparent 50%),
-        linear-gradient(135deg, var(--marble-white) 0%, var(--marble-cream) 50%, var(--marble-light) 100%);
-      padding: var(--space-4xl) var(--space-xl);
-      position: relative;
-    }
-
-    .product-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.008'/%3E%3C/svg%3E");
-      z-index: 0;
-    }
-    
-    .product-container {
-      max-width: 1600px;
-      margin: 0 auto;
-      padding: var(--space-4xl) var(--space-xl);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-5xl);
-      align-items: center;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .product-image-large {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 600px;
-    }
-    
-
-    
-    .product-info {
-      text-align: left;
-    }
-    
-    .product-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.5rem, 5vw, 3.5rem);
-      font-weight: 700;
-      margin-bottom: var(--space-xl);
-      color: var(--text-primary);
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    }
-
-    .product-description {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: var(--font-size-xl);
-      line-height: 1.7;
-      color: var(--text-medium);
-      margin-bottom: var(--space-2xl);
-      font-weight: 400;
-      letter-spacing: 0.01em;
-    }
-    
-    .philosophy-section {
-      background: linear-gradient(135deg, var(--marble-cream) 0%, var(--marble-light) 100%);
-      padding: 6rem 2rem;
-      display: flex;
-      align-items: center;
-      position: relative;
-    }
-    
-    .philosophy-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--dark-overlay);
-      z-index: 0;
-    }
-    
-    .philosophy-container {
-      max-width: 800px;
-      margin: 0 auto;
-      z-index: 1;
-      position: relative;
-    }
-    
-    .philosophy-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
-      font-weight: 600;
-      margin-bottom: 3rem;
-      color: var(--text-dark);
-      text-align: center;
-    }
-    
-    .philosophy-content {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      color: var(--text-medium);
-    }
-    
-    .philosophy-content p {
-      margin-bottom: 2rem;
-    }
-    
-    .philosophy-quote {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      font-style: italic;
-      color: var(--gold);
-      text-align: center;
-      margin: 3rem 0;
-      padding: 2rem;
-      border-left: 4px solid var(--gold);
-      background: rgba(184, 166, 122, 0.05);
-    }
-    
-    @media (max-width: 1024px) {
-      .product-container {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-      
-      .void-cube-large {
-        width: 600px;
-        height: 600px;
-        font-size: 1.5rem;
-      }
-    }
-    
-    @media (max-width: 768px) {
-      /* Reduce padding-top for tablets since navbar is smaller */
-      .main-content {
-        padding-top: 60px;
-      }
-
-      .product-container {
-        grid-template-columns: 1fr;
-        gap: var(--space-2xl);
-        padding: var(--space-2xl) var(--space-lg);
-        text-align: center;
-      }
-
-      .product-image-large img {
-        max-width: 400px;
-      }
-
-      .product-title {
-        font-size: clamp(2rem, 6vw, 2.5rem);
-      }
-
-      .product-description {
-        font-size: var(--font-size-lg);
-      }
-
-      .philosophy-container {
-        padding: 0 var(--space-lg);
-      }
-
-      .philosophy-title {
-        font-size: clamp(1.8rem, 5vw, 2.2rem);
-      }
-
-      .void-cube-large {
-        width: 280px;
-        height: 280px;
-        font-size: 1.2rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      /* Hide navbar on mobile phones */
-      .navbar {
-        display: none;
-      }
-
-      /* Remove padding-top from main-content since navbar is hidden */
-      .main-content {
-        padding-top: 0;
-      }
-
-      .product-section {
-        padding-top: var(--space-xl);
-      }
-
-      .product-container {
-        padding: var(--space-sm) var(--space-md);
-        gap: var(--space-sm);
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-      }
-
-      .product-image-large img {
-        max-width: 280px;
-        margin-bottom: var(--space-xs);
-      }
-
-      .product-title {
-        font-size: clamp(1.5rem, 6vw, 1.8rem);
-        margin-bottom: var(--space-xs);
-        line-height: 1.2;
-      }
-
-      .product-description {
-        font-size: var(--font-size-sm);
-        margin-bottom: var(--space-sm);
-        line-height: 1.4;
-      }
-
-      .cta-primary {
-        padding: var(--space-xs) var(--space-md);
-        font-size: var(--font-size-xs);
-        margin-top: var(--space-xs);
-      }
-
-      .philosophy-container {
-        padding: 0 var(--space-md);
-      }
-
-      .philosophy-title {
-        font-size: clamp(1.5rem, 7vw, 2rem);
-      }
-
-      .philosophy-content p {
-        font-size: var(--font-size-sm);
-        line-height: 1.6;
-      }
-
-      .void-cube-large {
-        width: 220px;
-        height: 220px;
-        font-size: 1rem;
-      }
-    }
-
-    /* PayPal Button Styling */
-    .paypal-button-container {
-      margin: 2rem 0;
-      text-align: center;
-      min-height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .payment-note {
-      text-align: center;
-      color: var(--text-light);
-      font-size: var(--font-size-sm);
-      margin-top: 1rem;
-      font-style: italic;
-    }
-
-    /* Ensure decorative overlays never block clicks */
-    .noise-overlay,
-    .gradient-bg {
-      pointer-events: none;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/css/lux.css">
 </head>
 <body>
-  <div class="noise-overlay"></div>
-  <div class="gradient-bg"></div>
-  
-  <nav class="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="nav-logo">Luxury of Nothing</a>
+
+  <div class="wash" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div class="cursor-ring" aria-hidden="true"><span class="cursor-label"></span></div>
+  <div class="cursor-dot" aria-hidden="true"></div>
+  <div class="scroll-progress" aria-hidden="true"><div class="bar"></div></div>
+  <div class="veil" aria-hidden="true"><span class="veil-word">nothing awaits&hellip;</span></div>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">Luxury <em>of</em> Nothing</a>
       <div class="nav-links">
-        <a href="index.html" class="nav-link">Home</a>
-        <a href="philosophy-products.html" class="nav-link active">Philosophy & Nothing</a>
+        <a href="index.html#object" class="nav-link u-line hide-mobile">The Object</a>
+        <a href="index.html#editions" class="nav-link u-line hide-mobile">Editions</a>
+        <a href="philosophy-products.html" class="nav-link u-line is-active hide-mobile" data-no-veil>Philosophy</a>
+        <button class="nav-cart u-line" type="button" aria-label="Open your void">
+          <svg width="15" height="16" viewBox="0 0 15 16" fill="none" aria-hidden="true">
+            <path d="M2 5.5h11l-.9 9H2.9l-.9-9z" stroke="currentColor" stroke-width="1.1"/>
+            <path d="M4.8 5.2V4a2.7 2.7 0 0 1 5.4 0v1.2" stroke="currentColor" stroke-width="1.1"/>
+          </svg>
+          <span>Void</span>
+          <span class="nav-cart-count">0</span>
+        </button>
       </div>
     </div>
   </nav>
-  
-  <div class="main-content">
-    <main>
-      <section class="product-section">
-        <div class="product-container">
-          <div class="product-image-large animated-fade-in delay-0">
-            <img src="/product.png" alt="Absolutely Nothing" class="animated-fade-in product-image-fade delay-0">
-          </div>
-          <div class="product-info animated-fade-in delay-0">
-            <h1 class="product-title animated-fade-in delay-1">Absolutely Nothing</h1>
-            <p class="product-description animated-fade-in delay-1">
-              An exclusive absence, tailored for those who already have everything.
-              This is not a product in the traditional sense, but an invitation to
-              embrace the luxury of nothingness.
-            </p>
-            <a class="cta-primary animated-fade-in delay-2" id="detail-btn" href="checkout.html">
-              <span>Procure Silence</span>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </a>
-          </div>
+
+  <main>
+
+    <header class="page-hero">
+      <div class="container">
+        <p class="eyebrow" data-fade style="justify-content:center;">House Doctrine</p>
+        <h1 class="display" style="font-size: clamp(2.6rem, 7vw, 6rem);" data-split>The philosophy of <em>nothing</em></h1>
+        <p class="hero-sub" data-fade>A brief treatise on the most understated acquisition of our time.</p>
+      </div>
+    </header>
+
+    <section class="section manifesto" style="padding-top: 0;">
+      <div class="ghost-word" data-parallax="0.4" aria-hidden="true">VOID</div>
+      <div class="container">
+        <div class="prose">
+          <p data-fade>
+            In a world where material possessions define success and status, we propose
+            a radical alternative: the luxury of nothing. This is not about deprivation,
+            but about the profound freedom that comes from intentional absence.
+          </p>
+          <p class="pull-quote" data-split>
+            &ldquo;In a world inundated with excess, <em>nothing</em> is the ultimate luxury.&rdquo;
+          </p>
+          <p data-fade>
+            Our philosophy draws from ancient wisdom traditions that recognize the power
+            of emptiness. From the Zen concept of "mu" (nothingness) to the minimalist
+            principles of essentialism, we understand that true luxury lies not in
+            accumulation, but in the space between things.
+          </p>
+          <p data-fade>
+            When you own nothing, you are free from the burden of possessions. You are
+            liberated from the constant need to acquire, maintain, and protect material
+            goods. This freedom allows you to focus on what truly matters: experiences,
+            relationships, and personal growth.
+          </p>
+          <p data-fade>
+            Absolutely Nothing is not a product in the traditional sense. It is an
+            invitation to embrace the luxury of absence, to find richness in simplicity,
+            and to discover that the most valuable thing you can possess is the space
+            to be yourself.
+          </p>
+          <p data-fade>
+            This is not for everyone. It is for those who have experienced the emptiness
+            of material abundance and seek something deeper. It is for those who understand
+            that true luxury is not about having more, but about needing less.
+          </p>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="philosophy-section">
-        <div class="philosophy-container animated-fade-in delay-3">
-          <h2 class="philosophy-title luxury-heading animated-fade-in delay-3">The Philosophy of Nothing</h2>
-          <div class="luxury-divider"></div>
-          <div class="philosophy-content">
-            <p class="animated-fade-in delay-4">
-              In a world where material possessions define success and status, we propose
-              a radical alternative: the luxury of nothing. This is not about deprivation,
-              but about the profound freedom that comes from intentional absence.
-            </p>
-            <div class="philosophy-quote animated-fade-in delay-4">
-              "In a world inundated with excess, nothing is the ultimate luxury."
-            </div>
-            <p class="animated-fade-in delay-5">
-              Our philosophy draws from ancient wisdom traditions that recognize the power
-              of emptiness. From the Zen concept of "mu" (nothingness) to the minimalist
-              principles of essentialism, we understand that true luxury lies not in
-              accumulation, but in the space between things.
-            </p>
-            <p class="animated-fade-in delay-5">
-              When you own nothing, you are free from the burden of possessions. You are
-              liberated from the constant need to acquire, maintain, and protect material
-              goods. This freedom allows you to focus on what truly matters: experiences,
-              relationships, and personal growth.
-            </p>
-            <p class="animated-fade-in delay-6">
-              Absolutely Nothing is not a product in the traditional sense. It is an
-              invitation to embrace the luxury of absence, to find richness in simplicity,
-              and to discover that the most valuable thing you can possess is the space
-              to be yourself.
-            </p>
-            <p class="animated-fade-in delay-6">
-              This is not for everyone. It is for those who have experienced the emptiness
-              of material abundance and seek something deeper. It is for those who understand
-              that true luxury is not about having more, but about needing less.
-            </p>
-          </div>
+    <section class="section" style="text-align: center; border-top: 1px solid var(--line-soft);">
+      <div class="container">
+        <p class="eyebrow" data-fade style="justify-content:center;">Ready?</p>
+        <h2 class="display" style="font-size: clamp(2rem, 4.5vw, 3.6rem);" data-split>Own the <em>absence</em></h2>
+        <p class="lede" data-fade style="max-width: 520px; margin: 2rem auto 0;">
+          An exclusive absence, tailored for those who already have everything.
+          $1,999. Nothing more.
+        </p>
+        <div class="hero-cta-row" data-fade style="margin-top: 3rem;">
+          <a href="checkout.html" class="btn btn-solid" data-magnetic="0.4" data-cursor="Acquire">
+            <span class="btn-label">Procure Silence</span>
+            <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="index.html#editions" class="btn btn-ghost" data-magnetic="0.3">
+            <span class="btn-label">Browse the Editions</span>
+          </a>
         </div>
-      </section>
+      </div>
+    </section>
 
-    </main>
-  </div>
+  </main>
 
-  
-
-  <footer>
-    <div class="footer-content">
-      <p>&copy; 2024 Luxury of Nothing. All rights reserved.</p>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-word" aria-hidden="true">NOTHING</div>
+      <div class="footer-grid">
+        <div class="footer-links">
+          <a href="index.html" class="footer-link u-line">Maison</a>
+          <a href="checkout.html" class="footer-link u-line">Acquire</a>
+          <a href="index.html#reserve" class="footer-link u-line">Concierge</a>
+        </div>
+        <p class="footer-fine">&copy; MMXXVI Luxury of Nothing. No rights necessary.</p>
+      </div>
     </div>
   </footer>
 
-  <!-- PayPal SDK with your actual Client ID (no pay later) -->
-  <!-- LIVE PayPal Client ID - Real payments enabled -->
-  <script src="https://www.paypal.com/sdk/js?client-id=Ada4aDxdU4UD5AiuL7jyJBr54vAMzcJApR9eHmzTsAYEsORvUlZNS2uKXv7aESWj2FCZYbflxo8NY2nKAUJcGtYfO9xUT_bxCNpkSM5JFbdQ2HtUW_p3Fr2aXupCW7r4tdypMBZG_Px9I7-MVXhOjLVzmAXyoOPF&currency=USD&components=buttons&disable-funding=paylater" async defer></script>
-  <!-- Paysera Integration -->
-  <script src="/src/js/main.js"></script>
-  <script src="/src/js/background-squares.js"></script>
-  <script>
-    // Initialize PayPal hosted button when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      // The hosted button will be rendered automatically by the script at the bottom
-    });
+  <div class="cart-backdrop" aria-hidden="true"></div>
+  <aside class="cart-drawer" aria-hidden="true" aria-label="Your void" data-lenis-prevent>
+    <div class="cart-head">
+      <h2 class="cart-title">Your Void</h2>
+      <button class="cart-close" type="button" aria-label="Close">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="cart-items"></div>
+    <div class="cart-foot">
+      <div class="cart-total-row">
+        <span class="cart-total-label">Total absence</span>
+        <span class="cart-total-value">$0</span>
+      </div>
+      <a href="checkout.html" class="btn btn-solid">
+        <span class="btn-label">Proceed to Acquisition</span>
+      </a>
+      <p class="cart-fine">Delivery is instantaneous, as there is nothing to deliver.</p>
+    </div>
+  </aside>
 
+  <div class="toast-stack" aria-live="polite"></div>
 
-
-
-
-
-
-    function openModal() {
-      const modal = document.getElementById('detail-modal');
-      modal.classList.remove('hidden');
-      document.documentElement.classList.add('modal-open');
-      document.body.classList.add('modal-open');
-      showView('product-info-view');
-    }
-
-    function closeModal() {
-      document.getElementById('detail-modal').classList.add('hidden');
-      document.documentElement.classList.remove('modal-open');
-      document.body.classList.remove('modal-open');
-    }
-
-    
-
-
-
-    // Go to PayPal hosted button; mark session so Back redirects home
-    document.addEventListener('DOMContentLoaded', function() {
-      const procureBtn = document.getElementById('detail-btn');
-      if (!procureBtn) return;
-      // No JS override; let anchor go to checkout.html
-    });
-
-    (function(){
-      const closeBtn = document.getElementById('close-modal');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-          closeModal();
-        });
-      }
-    })();
-
-    // Mobile X button close functionality
-    (function(){
-      const modalContent = document.querySelector('.modal-content');
-      if (modalContent) {
-        modalContent.addEventListener('click', (e) => {
-          const rect = e.target.getBoundingClientRect();
-          const clickX = e.clientX - rect.left;
-          const clickY = e.clientY - rect.top;
-          if (clickX > rect.width - 36 && clickY < 36) {
-            closeModal();
-          }
-        });
-      }
-    })();
-
-
-
-    document.getElementById('choose-paypal').addEventListener('click', () => {
-      showView('payment-view'); // Show the view with hosted button instead
-    });
-
-    document.getElementById('back-to-info').addEventListener('click', () => {
-      showView('product-info-view');
-    });
-
-    document.getElementById('close-success').addEventListener('click', () => {
-      closeModal();
-    });
-
-
-
-
-
-
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeModal();
-      }
-    });
-
-    // Click outside to close functionality removed to prevent issues
-  </script>
-  
-  <!-- PayPal Hosted Button Rendering -->
-  <script>
-    // Wait for PayPal SDK to load
-    document.addEventListener('DOMContentLoaded', function() {
-      // Check if PayPal SDK is loaded
-      if (typeof paypal !== 'undefined') {
-        renderPayPalHostedButton();
-      } else {
-        // Wait for SDK to load
-        const checkPayPal = setInterval(() => {
-          if (typeof paypal !== 'undefined') {
-            clearInterval(checkPayPal);
-            renderPayPalHostedButton();
-          }
-        }, 100);
-      }
-    });
-
-    function renderPayPalHostedButton() {
-      try {
-        console.log('Attempting to render PayPal hosted button...');
-        console.log('PayPal SDK available:', typeof paypal !== 'undefined');
-        console.log('Container element:', document.getElementById('paypal-container-R3VQPLVDZPUKC'));
-        
-        // Try hosted button first
-        if (typeof paypal.HostedButtons !== 'undefined') {
-          paypal.HostedButtons({
-            hostedButtonId: "R3VQPLVDZPUKC"
-          }).render("#paypal-container-R3VQPLVDZPUKC");
-          console.log('PayPal hosted button rendered successfully');
-        } else {
-          // Fallback to regular button
-          const button = paypal.Buttons({
-            createOrder: function(data, actions) {
-              return actions.order.create({
-                purchase_units: [{
-                  amount: {
-                    value: '1999.00',
-                    currency_code: 'USD'
-                  }
-                }]
-              });
-            },
-            onApprove: function(data, actions) {
-              return actions.order.capture().then(function(details) {
-                console.log('Payment completed:', details);
-                showView('success-view');
-              });
-            }
-          });
-          
-          button.render("#paypal-container-R3VQPLVDZPUKC");
-          console.log('PayPal regular button rendered successfully');
-        }
-      } catch (error) {
-        console.error('Error rendering PayPal hosted button:', error);
-        document.getElementById('paypal-container-R3VQPLVDZPUKC').innerHTML = 
-          '<p style="color: red;">PayPal button failed to load: ' + error.message + '</p>';
-      }
-    }
-  </script>
+  <script src="/src/js/vendor/gsap.min.js" defer></script>
+  <script src="/src/js/vendor/ScrollTrigger.min.js" defer></script>
+  <script src="/src/js/vendor/lenis.min.js" defer></script>
+  <script src="/src/js/lux.js" defer></script>
 </body>
 </html>
