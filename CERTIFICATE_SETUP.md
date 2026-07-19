@@ -71,25 +71,51 @@ Then trigger a redeploy (Deploys → Trigger deploy).
 
 On the certificate page, buyers can enter an email address and have the
 certificate delivered as a PDF attachment instead of (or in addition to)
-downloading it. This goes through [Resend](https://resend.com) — set two
-more Netlify environment variables:
+downloading it. This uses Netlify's built-in **Email Integration** extension
+(backed by Postmark, SendGrid, or Mailgun — whichever you already have an
+account with), not a separate email API of its own.
+
+### 5a. Turn on the extension
+
+1. In the Netlify dashboard: **Project configuration → Emails → Configuration**.
+2. Select **Enable email extension**.
+3. Pick a provider (**Postmark**, **SendGrid**, or **Mailgun**) and paste its
+   API key. (Get the key from that provider's own dashboard — you need an
+   account with one of them; the extension just relays through it.)
+4. If you chose Mailgun, also fill in your Mailgun domain and host region.
+5. Leave **Emails directory** as `./emails` (that's where the template lives:
+   `frontend/emails/certificate/index.html`).
+6. Make sure the scopes for this include **Builds** and **Functions**.
+7. Save, then trigger a redeploy.
+
+Netlify sets `NETLIFY_EMAILS_PROVIDER`, `NETLIFY_EMAILS_PROVIDER_API_KEY`, and
+`NETLIFY_EMAILS_SECRET` for you automatically once this is configured — you
+don't add those yourself.
+
+### 5b. Set the sender
+
+Add one more Netlify environment variable by hand:
 
 | Variable | Value |
 |---|---|
-| `RESEND_API_KEY` | API key from your Resend dashboard |
-| `CERT_EMAIL_FROM` | A verified sender, e.g. `Luxury of Nothing <concierge@yourdomain.com>` |
+| `CERT_EMAIL_FROM` | A sender address verified with your chosen provider, e.g. `Luxury of Nothing <concierge@yourdomain.com>` |
 
-Steps:
+(Postmark/SendGrid/Mailgun all require you to verify the sending domain or
+address with them directly before they'll deliver — check that provider's own
+dashboard if sends fail.)
 
-1. Create a Resend account and verify a sending domain (or use their shared
-   `onboarding@resend.dev` test address while developing — it only delivers
-   to your own account email).
-2. Create an API key in the Resend dashboard and set it as `RESEND_API_KEY`.
-3. Set `CERT_EMAIL_FROM` to a sender address on your verified domain.
-4. Redeploy.
+Until the extension is enabled *and* `CERT_EMAIL_FROM` is set, the "Send PDF"
+button on the certificate page shows a graceful "concierge unavailable" error
+instead of failing silently.
 
-Until both variables are set, the "Send PDF" button on the certificate page
-shows a graceful "concierge unavailable" error instead of failing silently.
+### How it works
+
+`frontend/netlify/functions/email-certificate.mjs` renders the certificate
+PNG (the same rasterisation the Download button produces) into a one-page PDF
+with `pdf-lib`, then POSTs it to Netlify's internal
+`/.netlify/functions/emails/certificate` endpoint, which fills in
+`frontend/emails/certificate/index.html` and sends it through whichever
+provider you configured.
 
 The endpoint (`/api/email-certificate`) is gated on the certificate's private
 verification code, so it can only send a certificate that was actually

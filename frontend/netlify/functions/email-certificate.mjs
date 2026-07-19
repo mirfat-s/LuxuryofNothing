@@ -2,7 +2,7 @@ import {
   json, normalizeCode, findByCode, signCode, codesMatch, certConfigured,
   recordEmailSend
 } from './lib/certs.mjs';
-import { emailConfigured, sendCertificateEmail } from './lib/email.mjs';
+import { emailConfigured, sendCertificateEmail } from './lib/netlifyEmail.mjs';
 import { pngToPdf } from './lib/pdf.mjs';
 
 const EMAIL_RE = /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,24}$/;
