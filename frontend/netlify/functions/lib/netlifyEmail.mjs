@@ -8,16 +8,36 @@
    (a sender verified with the configured provider). */
 
 const TEMPLATE = 'certificate';
+const MAX_ATTEMPTS = 3;
 
 export function emailConfigured() {
   return !!process.env.NETLIFY_EMAILS_SECRET && !!process.env.CERT_EMAIL_FROM;
+}
+
+/* A function calling back into its own site's public URL occasionally hits
+   a stale pooled connection from a prior Lambda invocation, surfacing as a
+   bare "fetch failed" wrapping a TLS handshake error — nothing to do with
+   the request itself. Retry a couple of times before giving up; real HTTP
+   error responses (4xx/5xx from the endpoint) are returned as-is, not
+   retried, since those are legitimate outcomes. */
+async function fetchWithRetry(url, options) {
+  let lastErr;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      return await fetch(url, options);
+    } catch (err) {
+      lastErr = err;
+      if (attempt < MAX_ATTEMPTS) await new Promise((r) => setTimeout(r, 250 * attempt));
+    }
+  }
+  throw lastErr;
 }
 
 export async function sendCertificateEmail({ to, name, serial, date, code, pdfBase64 }) {
   const base = process.env.URL || process.env.DEPLOY_PRIME_URL;
   if (!base) throw new Error('Site URL is not available to reach the email function');
 
-  const res = await fetch(`${base}/.netlify/functions/emails/${TEMPLATE}`, {
+  const res = await fetchWithRetry(`${base}/.netlify/functions/emails/${TEMPLATE}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
