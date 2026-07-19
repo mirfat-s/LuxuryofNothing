@@ -67,6 +67,35 @@ Then trigger a redeploy (Deploys → Trigger deploy).
 - Issuance is idempotent per PayPal order: retrying a paid order returns the
   original certificate instead of minting a new serial.
 
+## 5. (Optional) Let buyers email themselves the PDF
+
+On the certificate page, buyers can enter an email address and have the
+certificate delivered as a PDF attachment instead of (or in addition to)
+downloading it. This goes through [Resend](https://resend.com) — set two
+more Netlify environment variables:
+
+| Variable | Value |
+|---|---|
+| `RESEND_API_KEY` | API key from your Resend dashboard |
+| `CERT_EMAIL_FROM` | A verified sender, e.g. `Luxury of Nothing <concierge@yourdomain.com>` |
+
+Steps:
+
+1. Create a Resend account and verify a sending domain (or use their shared
+   `onboarding@resend.dev` test address while developing — it only delivers
+   to your own account email).
+2. Create an API key in the Resend dashboard and set it as `RESEND_API_KEY`.
+3. Set `CERT_EMAIL_FROM` to a sender address on your verified domain.
+4. Redeploy.
+
+Until both variables are set, the "Send PDF" button on the certificate page
+shows a graceful "concierge unavailable" error instead of failing silently.
+
+The endpoint (`/api/email-certificate`) is gated on the certificate's private
+verification code, so it can only send a certificate that was actually
+issued — it can't be used as an open relay to email arbitrary attachments to
+arbitrary addresses. Each certificate can be re-sent up to 5 times.
+
 ## Testing a purchase on the live site without paying
 
 Set `ALLOW_TEST_PURCHASE=true` as a fifth Netlify environment variable and

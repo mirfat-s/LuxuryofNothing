@@ -130,3 +130,11 @@ export async function issueCertificate(name, orderID, txnID) {
 export async function recentCertificates() {
   return (await store().get('recent', { type: 'json' })) || [];
 }
+
+/* Tracks how many times a certificate has been emailed, so the email-send
+   endpoint can cap repeat sends (see MAX_EMAIL_SENDS in email-certificate.mjs). */
+export async function recordEmailSend(record) {
+  const updated = { ...record, emailSends: (record.emailSends || 0) + 1 };
+  await store().setJSON(`cert:${record.code}`, updated);
+  return updated;
+}

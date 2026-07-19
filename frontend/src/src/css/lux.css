@@ -560,6 +560,7 @@ html.no-motion .hero-scroll-cue .cue-track::after { animation: none; }
   stroke-dashoffset: 26;
 }
 .btn.is-success { pointer-events: none; }
+.btn.is-sending { pointer-events: none; opacity: 0.55; }
 .btn.is-success .btn-label,
 .btn.is-success .btn-arrow { opacity: 0; transition: opacity 0.2s ease; }
 .btn.is-success .btn-check { opacity: 1; }
@@ -1422,6 +1423,33 @@ html.no-motion .cert-svg .appear { opacity: 1; }
   display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;
   margin-top: 0.5rem;
 }
+.cert-email-form {
+  max-width: 420px;
+  margin: 1.6rem auto 0;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--line-soft);
+}
+.cert-email-label {
+  font-family: var(--font-ui);
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  text-align: center;
+  margin-bottom: 0.9rem;
+}
+.cert-email-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.9rem;
+}
+.cert-email-row .field { flex: 1; }
+.cert-email-row .btn { flex: none; white-space: nowrap; }
+@media (max-width: 560px) {
+  .cert-email-row { flex-direction: column; align-items: stretch; gap: 1.1rem; }
+  .cert-email-row .btn { width: 100%; }
+}
+
 .cert-keep-note {
   font-family: var(--font-serif);
   font-style: italic;
@@ -1440,7 +1468,7 @@ html.no-motion .cert-svg .appear { opacity: 1; }
 /* Print: the certificate alone, on clean paper */
 @media print {
   .nav, .footer, .grain, .wash, .cursor-dot, .cursor-ring, .scroll-progress,
-  .veil, .toast-stack, .cert-actions, .cert-keep-note, #stage-cert .back-row,
+  .veil, .toast-stack, .cert-actions, .cert-email-form, .cert-keep-note, #stage-cert .back-row,
   #stage-cert .eyebrow, #stage-cert .checkout-title, #stage-cert .checkout-sub,
   #stage-pay { display: none !important; }
   body { background: #fff; }

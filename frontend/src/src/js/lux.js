@@ -760,7 +760,10 @@
       });
     }
 
+    var currentCert = null;
+
     function showCertificate(cert) {
+      currentCert = cert;
       setSvgText('cert-name', cert.name);
       setSvgText('cert-serial',
         'EDITION № ' + cert.serial + ' — ISSUED ' + String(cert.date).toUpperCase());
@@ -783,7 +786,7 @@
           .fromTo('#cert-seal',
             { scale: 0.4, rotation: -50, opacity: 0, transformOrigin: '50% 50%' },
             { scale: 1, rotation: 0, opacity: 1, duration: 0.7, ease: 'back.out(2)' }, '-=0.3')
-          .fromTo('.cert-actions, .cert-keep-note, #stage-cert .back-row',
+          .fromTo('.cert-actions, .cert-email-form, .cert-keep-note, #stage-cert .back-row',
             { opacity: 0, y: 18 },
             { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.09 }, '-=0.35');
       }
@@ -794,37 +797,104 @@
       if (el) el.textContent = value;
     }
 
-    // Download: rasterise the SVG at 2x. Fonts fall back to Georgia in the
-    // raster; Print/PDF uses the live webfonts.
+    // Shared rasteriser: draws the live SVG certificate onto a canvas at 2x
+    // and hands back a PNG data URL. Used by both Download and Email PDF.
+    // Fonts fall back to Georgia in the raster; Print/PDF uses live webfonts.
+    function rasterizeCert(onDone, onError) {
+      var svg = document.getElementById('cert-live');
+      if (!svg) { onError(new Error('Certificate not found')); return; }
+      var xml = new XMLSerializer().serializeToString(svg);
+      var blob = new Blob([xml], { type: 'image/svg+xml;charset=utf-8' });
+      var url = URL.createObjectURL(blob);
+      var img = new Image();
+      img.onload = function () {
+        var canvas = document.createElement('canvas');
+        canvas.width = 1520; canvas.height = 1120;
+        var ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#FBFAF6';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        URL.revokeObjectURL(url);
+        onDone(canvas.toDataURL('image/png'));
+      };
+      img.onerror = function () { URL.revokeObjectURL(url); onError(new Error('Could not rasterise certificate')); };
+      img.src = url;
+    }
+
     var dlBtn = document.getElementById('cert-download');
     if (dlBtn) {
       dlBtn.addEventListener('click', function () {
-        var svg = document.getElementById('cert-live');
-        if (!svg) return;
-        var xml = new XMLSerializer().serializeToString(svg);
-        var blob = new Blob([xml], { type: 'image/svg+xml;charset=utf-8' });
-        var url = URL.createObjectURL(blob);
-        var img = new Image();
-        img.onload = function () {
-          var canvas = document.createElement('canvas');
-          canvas.width = 1520; canvas.height = 1120;
-          var ctx = canvas.getContext('2d');
-          ctx.fillStyle = '#FBFAF6';
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          URL.revokeObjectURL(url);
+        rasterizeCert(function (dataUrl) {
           var a = document.createElement('a');
           a.download = 'certificate-of-absence.png';
-          a.href = canvas.toDataURL('image/png');
+          a.href = dataUrl;
           a.click();
           toast('Certificate downloaded', 'A perfect copy of your proof of nothing.');
-        };
-        img.onerror = function () { URL.revokeObjectURL(url); window.print(); };
-        img.src = url;
+        }, function () { window.print(); });
       });
     }
     var prBtn = document.getElementById('cert-print');
     if (prBtn) prBtn.addEventListener('click', function () { window.print(); });
+
+    // Email the certificate as a PDF attachment. Gated server-side on the
+    // (private) verification code so the endpoint can't be used to blast
+    // arbitrary attachments to arbitrary addresses.
+    var emailForm = document.getElementById('cert-email-form');
+    if (emailForm) {
+      var emailInput = document.getElementById('cert-email');
+      var emailBtn = document.getElementById('cert-email-btn');
+      var emailLabel = emailBtn.querySelector('.btn-label');
+      var emailBusy = false;
+
+      emailForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (emailBusy || !currentCert) return;
+
+        var email = (emailInput.value || '').trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          shake(emailInput.closest('.field'));
+          emailInput.focus();
+          return;
+        }
+
+        emailBusy = true;
+        emailBtn.classList.add('is-sending');
+        emailLabel.textContent = 'Sending…';
+
+        function reset() {
+          emailBusy = false;
+          emailBtn.classList.remove('is-sending');
+          emailLabel.textContent = 'Send PDF';
+        }
+
+        rasterizeCert(function (dataUrl) {
+          fetch('/api/email-certificate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code: currentCert.code, email: email, image: dataUrl })
+          })
+            .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
+            .then(function (res) {
+              reset();
+              if (!res.ok || !res.d || res.d.error) {
+                throw new Error((res.d && res.d.error) || 'Failed to send');
+              }
+              emailBtn.classList.add('is-success');
+              setTimeout(function () { emailBtn.classList.remove('is-success'); }, 2600);
+              toast('Certificate emailed', 'Sent to ' + email + '.');
+              emailInput.value = '';
+              emailInput.closest('.field').classList.remove('is-filled');
+            })
+            .catch(function (err) {
+              reset();
+              toast('Could not send the certificate', err.message || 'Please try again.');
+            });
+        }, function () {
+          reset();
+          toast('Could not send the certificate', 'Please try Download instead.');
+        });
+      });
+    }
   }
 
   /* ----------------------------------------------------------
