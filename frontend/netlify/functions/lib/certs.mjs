@@ -87,6 +87,13 @@ export function certConfigured() {
   return !!process.env.CERT_SECRET && process.env.CERT_SECRET.length >= 16;
 }
 
+/* Opt-in escape hatch for testing the full purchase → certificate → registry
+   → verify flow with no real payment. Off unless explicitly enabled — never
+   leave this set to 'true' on a site taking real orders. */
+export function testPurchaseAllowed() {
+  return process.env.ALLOW_TEST_PURCHASE === 'true';
+}
+
 export async function findByOrder(orderID) {
   return await store().get(`order:${orderID}`, { type: 'json' });
 }

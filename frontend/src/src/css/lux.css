@@ -1018,13 +1018,8 @@ html.no-motion .cert-svg .appear { opacity: 1; }
 }
 
 /* ------------------------------------------------------------
-   Reserve — email capture
+   Form fields — floating label, shared by checkout & verifier
    ------------------------------------------------------------ */
-.reserve-section { text-align: center; }
-.reserve-form {
-  max-width: 520px;
-  margin: clamp(2.5rem, 5vw, 4rem) auto 0;
-}
 .field {
   position: relative;
   text-align: left;
@@ -1072,7 +1067,6 @@ html.no-motion .cert-svg .appear { opacity: 1; }
   transition: transform 0.6s var(--ease-out);
 }
 .field input:focus ~ .field-line { transform: scaleX(1); }
-.reserve-form .btn { margin-top: 2.2rem; }
 
 /* ------------------------------------------------------------
    Footer
@@ -1392,6 +1386,13 @@ html.no-motion .cert-svg .appear { opacity: 1; }
   color: var(--ink-mute);
   margin-top: 1.25rem;
 }
+.test-purchase-btn {
+  display: flex; margin: 1rem auto 0; width: 100%; max-width: 340px;
+  border-color: #b5482f; color: #b5482f;
+}
+.test-purchase-btn::before { background: #b5482f; }
+.test-purchase-btn:hover { color: var(--ivory); }
+
 .back-row {
   display: flex; justify-content: center; gap: 2.5rem;
   margin-top: 2rem;

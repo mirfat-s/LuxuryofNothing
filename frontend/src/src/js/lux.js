@@ -34,7 +34,7 @@
     initCounters();
     initCertificate();
     initCart();
-    initReserveForm();
+    initFieldLabels();
     initRegistry();
     initVerifier();
     initCheckout();
@@ -723,6 +723,43 @@
       }, 100);
     }
 
+    // Test-purchase button: only revealed when the site has explicitly
+    // opted in via ALLOW_TEST_PURCHASE, so real customers never see it.
+    var testBtn = document.getElementById('test-purchase');
+    if (testBtn) {
+      fetch('/api/config')
+        .then(function (r) { return r.json(); })
+        .then(function (d) { if (d.testPurchase) testBtn.hidden = false; })
+        .catch(function () {});
+
+      var testBusy = false;
+      testBtn.addEventListener('click', function () {
+        if (testBusy) return;
+        if (!inscribedName()) {
+          shake(nameInput.closest('.field'));
+          nameInput.focus();
+          return;
+        }
+        testBusy = true;
+        testBtn.classList.add('is-success');
+        fetch('/api/test-purchase', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: inscribedName() })
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (d) {
+            if (!d.certificate) throw new Error(d.error || 'Test purchase failed');
+            showCertificate(d.certificate);
+          })
+          .catch(function (err) {
+            testBusy = false;
+            testBtn.classList.remove('is-success');
+            toast('Test purchase failed', err.message || 'Please try again.');
+          });
+      });
+    }
+
     function showCertificate(cert) {
       setSvgText('cert-name', cert.name);
       setSvgText('cert-serial',
@@ -805,16 +842,31 @@
     renderCart();
     updateBadge(false);
 
+    var addButtons = document.querySelectorAll('[data-add-to-cart]');
+
+    // Reflect items already in the cart (restored from localStorage) so a
+    // button for an item you already own doesn't invite adding it again.
+    addButtons.forEach(function (btn) {
+      var id = btn.getAttribute('data-id') || btn.getAttribute('data-name');
+      if (cart.some(function (it) { return it.id === id; })) lockButton(btn);
+    });
+
     openBtn.addEventListener('click', function (e) { e.preventDefault(); openDrawer(); });
     drawer.querySelector('.cart-close').addEventListener('click', closeDrawer);
     if (backdrop) backdrop.addEventListener('click', closeDrawer);
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDrawer(); });
 
-    document.querySelectorAll('[data-add-to-cart]').forEach(function (btn) {
+    addButtons.forEach(function (btn) {
       btn.addEventListener('click', function (e) {
         e.preventDefault();
+        var id = btn.getAttribute('data-id') || btn.getAttribute('data-name');
+        if (cart.some(function (it) { return it.id === id; })) {
+          toast('Already in your void', 'One unit of nothing is quite enough.');
+          openDrawer();
+          return;
+        }
         addItem({
-          id: btn.getAttribute('data-id') || btn.getAttribute('data-name'),
+          id: id,
           name: btn.getAttribute('data-name') || 'Absolutely Nothing',
           sub: btn.getAttribute('data-sub') || '',
           price: parseFloat(btn.getAttribute('data-price') || '1999')
@@ -827,9 +879,10 @@
       if (rm) {
         var idx = parseInt(rm.getAttribute('data-remove'), 10);
         var row = rm.closest('.cart-item');
-        cart.splice(idx, 1);
+        var removed = cart.splice(idx, 1)[0];
         persist();
         updateBadge(true);
+        if (removed) unlockButton(removed.id);
         if (hasGSAP && !REDUCED && row) {
           gsap.to(row, {
             opacity: 0, x: 40, height: 0, paddingTop: 0, paddingBottom: 0,
@@ -838,6 +891,19 @@
         } else renderCart();
       }
     });
+
+    function lockButton(btn) {
+      btn.classList.add('is-success');
+      btn.disabled = true;
+    }
+    function unlockButton(id) {
+      addButtons.forEach(function (btn) {
+        if ((btn.getAttribute('data-id') || btn.getAttribute('data-name')) === id) {
+          btn.classList.remove('is-success');
+          btn.disabled = false;
+        }
+      });
+    }
 
     function openDrawer() {
       renderCart();
@@ -863,13 +929,12 @@
     function addItem(item, btn) {
       cart.push(item);
       persist();
-      // button morph → checkmark
+      // button morph → checkmark, and stays locked: this is a one-per-void item
       if (btn) {
-        btn.classList.add('is-success');
         if (hasGSAP && !REDUCED) {
           gsap.fromTo(btn, { scale: 1 }, { scale: 0.94, duration: 0.12, yoyo: true, repeat: 1, ease: 'power2.inOut' });
         }
-        setTimeout(function () { btn.classList.remove('is-success'); }, 1500);
+        lockButton(btn);
       }
       // flying dot: button → cart icon
       if (btn && hasGSAP && !REDUCED) {
@@ -972,34 +1037,13 @@
   window.lonToast = toast;
 
   /* ----------------------------------------------------------
-     Reserve form — floating label, success morph, toast
+     Floating labels — shared by every .field input on the site
      ---------------------------------------------------------- */
-  function initReserveForm() {
+  function initFieldLabels() {
     document.querySelectorAll('.field input').forEach(function (input) {
       input.addEventListener('input', function () {
         input.closest('.field').classList.toggle('is-filled', input.value.trim() !== '');
       });
-    });
-    var form = document.querySelector('.reserve-form');
-    if (!form) return;
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var input = form.querySelector('input[type="email"]');
-      var btn = form.querySelector('button[type="submit"]');
-      if (!input || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
-        if (hasGSAP && !REDUCED && input) {
-          gsap.fromTo(input.closest('.field'), { x: 0 }, { x: -9, duration: 0.07, repeat: 5, yoyo: true, ease: 'power1.inOut', clearProps: 'x' });
-        }
-        return;
-      }
-      if (btn) {
-        btn.classList.add('is-success');
-        setTimeout(function () { btn.classList.remove('is-success'); }, 2200);
-      }
-      toast('Certificate of Absence generated', 'A confirmation containing nothing is on its way to ' + input.value + '.');
-      input.value = '';
-      input.closest('.field').classList.remove('is-filled');
-      input.blur();
     });
   }
 

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/src/css/lux.css">
-  <script src="https://www.paypal.com/sdk/js?client-id=BAAhPmDRBFrtk2WW9DrZ4c5WJrGCBTZ8D2zqLY0dO6ozikaof0LS3FNpQ74Yr2ul2xK5RFM5kJbZolXLT0&components=buttons&intent=capture&disable-funding=venmo,paylater&currency=USD" defer></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=Ac9piZy_lu-Fj2VyH1kUjuTIzC1pRfwlSMmKR5YXTl4QEPKzvDVDckgIhrG2NKbhCppF1TGW2oPRdu6n&components=buttons&intent=capture&disable-funding=venmo,paylater&currency=USD" defer></script>
 </head>
 <body>
 
@@ -59,6 +59,10 @@
 
           <div id="paypal-buttons" class="paypal-button-container" data-fade></div>
           <p class="payment-note" data-fade>Secure payment processed by PayPal</p>
+
+          <button class="btn btn-ghost test-purchase-btn" type="button" id="test-purchase" hidden data-fade>
+            <span class="btn-label">Test Purchase &mdash; No Payment (Dev Mode)</span>
+          </button>
           <div class="back-row" data-fade>
             <a class="u-line" href="philosophy-products.html">&larr; The Philosophy</a>
             <a class="u-line" href="index.html">Return to the Maison</a>

@@ -67,6 +67,20 @@ Then trigger a redeploy (Deploys → Trigger deploy).
 - Issuance is idempotent per PayPal order: retrying a paid order returns the
   original certificate instead of minting a new serial.
 
+## Testing a purchase on the live site without paying
+
+Set `ALLOW_TEST_PURCHASE=true` as a fifth Netlify environment variable and
+redeploy. This reveals a **"Test Purchase — No Payment (Dev Mode)"** button
+on the checkout page (below the PayPal buttons) that mints a real,
+verifiable certificate — inscribed with the name you enter, appearing in the
+public Registry of Absence, checkable at "Authenticate a certificate" —
+without going through PayPal at all.
+
+**This is a genuine bypass of payment on your live site.** Anyone who finds
+the button can mint certificates for free. Remove the `ALLOW_TEST_PURCHASE`
+variable (or set it to anything other than `true`) and redeploy as soon as
+you're done testing, before real customers arrive.
+
 ## Local development
 
 Run from the repo root:
