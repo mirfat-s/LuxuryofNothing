@@ -967,11 +967,11 @@ html.no-motion .cert-svg .appear { opacity: 1; }
 .btn-void:hover { color: var(--ink); border-color: var(--ivory); }
 
 /* Floating-label field on dark ground */
-.field-dark input { color: var(--ivory); border-bottom-color: rgba(247, 245, 240, 0.25); }
-.field-dark label { color: rgba(247, 245, 240, 0.45); }
-.field-dark input:focus ~ label,
-.field-dark.is-filled label { color: var(--gold-soft); }
-.field-dark .field-line { background: var(--gold-soft); }
+.field.field-dark input { color: var(--ivory); border-bottom-color: rgba(247, 245, 240, 0.25); }
+.field.field-dark label { color: rgba(247, 245, 240, 0.45); }
+.field.field-dark input:focus ~ label,
+.field.field-dark.is-filled label { color: var(--gold-soft); }
+.field.field-dark .field-line { background: var(--gold-soft); }
 
 .verify-result { margin-top: 1.5rem; min-height: 3.4rem; }
 .verify-result.is-valid {
