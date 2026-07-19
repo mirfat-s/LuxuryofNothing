@@ -33,9 +33,11 @@
     initVitrine();
     initCounters();
     initCertificate();
-    initHorizontal();
     initCart();
     initReserveForm();
+    initRegistry();
+    initVerifier();
+    initCheckout();
     initVeil();
     initAnchors();
   }
@@ -98,7 +100,7 @@
     });
 
     // Hover morphs — event delegation so dynamic nodes (cart items) work
-    var HOVERABLE = 'a, button, [data-cursor], input, label, .edition-card';
+    var HOVERABLE = 'a, button, [data-cursor], input, label';
     document.addEventListener('mouseover', function (e) {
       var t = e.target.closest(HOVERABLE);
       if (!t) return;
@@ -548,58 +550,244 @@
   }
 
   /* ----------------------------------------------------------
-     Editions — horizontal panorama (pinned scrub on desktop,
-     native snap-scroll on touch)
+     Registry of Absence — live list of issued certificates
      ---------------------------------------------------------- */
-  function initHorizontal() {
-    var section = document.querySelector('.editions-section');
-    var wrap = document.querySelector('.h-wrap');
-    var track = document.querySelector('.h-track');
-    var epBar = document.querySelector('.editions-progress .ep-bar');
-    if (!section || !track) return;
+  function initRegistry() {
+    var list = document.querySelector('[data-registry]');
+    if (!list) return;
 
-    if (TOUCH || REDUCED || !hasGSAP) {
-      // native horizontal swipe; progress bar mirrors scrollLeft
-      if (wrap && epBar) {
-        wrap.addEventListener('scroll', function () {
-          var max = wrap.scrollWidth - wrap.clientWidth;
-          epBar.style.transform = 'scaleX(' + (max > 0 ? wrap.scrollLeft / max : 0) + ')';
-        }, { passive: true });
+    fetch('/api/registry')
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+      .then(function (res) {
+        if (!res.ok || !res.data.certificates) {
+          list.innerHTML = '<div class="registry-status">' +
+            esc(res.data.error || 'The registry is unavailable.') + '</div>';
+          return;
+        }
+        var certs = res.data.certificates;
+        if (!certs.length) {
+          list.innerHTML = '<div class="registry-status">The registry awaits its first patron.</div>';
+          return;
+        }
+        list.innerHTML = certs.map(function (c) {
+          return '<div class="reg-row">' +
+            '<span class="reg-serial">&#8470; ' + esc(c.serial) + '</span>' +
+            '<span class="reg-name">' + esc(c.name) + '</span>' +
+            '<span class="reg-date">' + esc(c.date) + '</span>' +
+            '</div>';
+        }).join('');
+        if (hasGSAP && !REDUCED) {
+          gsap.fromTo(list.querySelectorAll('.reg-row'),
+            { opacity: 0, y: 22 },
+            {
+              opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08,
+              scrollTrigger: { trigger: list, start: 'top 88%', once: true }
+            });
+        }
+      })
+      .catch(function () {
+        list.innerHTML = '<div class="registry-status">The registry is unavailable.</div>';
+      });
+  }
+
+  /* ----------------------------------------------------------
+     Certificate verifier — authentic or forgery, no mercy
+     ---------------------------------------------------------- */
+  function initVerifier() {
+    var form = document.querySelector('.verify-form');
+    if (!form) return;
+    var input = form.querySelector('input');
+    var result = document.querySelector('.verify-result');
+    var busy = false;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (busy) return;
+      var code = (input.value || '').trim();
+      if (code.replace(/[^0-9a-fA-F]/g, '').length !== 12) {
+        shake(input.closest('.field'));
+        return;
       }
-      return;
+      busy = true;
+      result.className = 'verify-result';
+      result.innerHTML = '<div class="registry-status">Consulting the archives&hellip;</div>';
+
+      fetch('/api/verify?code=' + encodeURIComponent(code))
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+          busy = false;
+          if (d.valid) {
+            result.className = 'verify-result is-valid';
+            result.innerHTML =
+              '<div class="vr-seal">&empty;</div>' +
+              '<div class="vr-body">' +
+              '<div class="vr-title">Authentic</div>' +
+              '<div class="vr-sub">&#8470; ' + esc(d.serial) + ' &mdash; inscribed to ' + esc(d.name) +
+              ' &mdash; ' + esc(d.date) + '</div>' +
+              '</div>';
+            if (hasGSAP && !REDUCED) {
+              gsap.fromTo(result.querySelector('.vr-seal'),
+                { scale: 0.3, rotation: -40, opacity: 0 },
+                { scale: 1, rotation: 0, opacity: 1, duration: 0.7, ease: 'back.out(2)' });
+              gsap.fromTo(result.querySelector('.vr-body'),
+                { opacity: 0, x: 16 }, { opacity: 1, x: 0, duration: 0.6, ease: 'power3.out', delay: 0.15 });
+            }
+          } else if (d.error) {
+            result.className = 'verify-result';
+            result.innerHTML = '<div class="registry-status">' + esc(d.error) + '</div>';
+          } else {
+            result.className = 'verify-result is-invalid';
+            result.innerHTML =
+              '<div class="vr-title">This certificate is a forgery.</div>' +
+              '<div class="vr-sub">How embarrassing.</div>';
+            shake(result);
+          }
+        })
+        .catch(function () {
+          busy = false;
+          result.className = 'verify-result';
+          result.innerHTML = '<div class="registry-status">The concierge is unavailable.</div>';
+        });
+    });
+  }
+
+  function shake(el) {
+    if (!el) return;
+    if (hasGSAP && !REDUCED) {
+      gsap.fromTo(el, { x: 0 }, { x: -9, duration: 0.07, repeat: 5, yoyo: true, ease: 'power1.inOut', clearProps: 'x' });
+    }
+  }
+
+  /* ----------------------------------------------------------
+     Checkout — PayPal Buttons gated on an inscription name;
+     a verified capture mints the personalised certificate
+     ---------------------------------------------------------- */
+  function initCheckout() {
+    var container = document.getElementById('paypal-buttons');
+    if (!container) return;
+    var nameInput = document.getElementById('inscription-name');
+    var stagePay = document.getElementById('stage-pay');
+    var stageCert = document.getElementById('stage-cert');
+
+    function inscribedName() {
+      var v = (nameInput && nameInput.value || '').replace(/\s+/g, ' ').trim();
+      return v.length >= 2 ? v : null;
     }
 
-    var scrollTween = gsap.to(track, {
-      x: function () { return -Math.max(0, track.scrollWidth - innerWidth + 60); },
-      ease: 'none',
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: function () { return '+=' + (track.scrollWidth - innerWidth + 200); },
-        pin: '.editions-pin',
-        scrub: 0.8,
-        invalidateOnRefresh: true,
-        anticipatePin: 1,
-        onUpdate: function (self) {
-          if (epBar) epBar.style.transform = 'scaleX(' + self.progress + ')';
+    function mount() {
+      if (typeof paypal === 'undefined' || !paypal.Buttons) return false;
+      paypal.Buttons({
+        style: { layout: 'vertical', color: 'black', shape: 'pill', label: 'pay' },
+        onClick: function (data, actions) {
+          if (!inscribedName()) {
+            shake(nameInput.closest('.field'));
+            nameInput.focus();
+            return actions.reject();
+          }
+          return actions.resolve();
+        },
+        createOrder: function () {
+          return fetch('/api/create-order', { method: 'POST' })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+              if (!d.orderID) throw new Error(d.error || 'Order failed');
+              return d.orderID;
+            });
+        },
+        onApprove: function (data) {
+          return fetch('/api/capture-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ orderID: data.orderID, name: inscribedName() })
+          })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+              if (!d.certificate) throw new Error(d.error || 'Capture failed');
+              showCertificate(d.certificate);
+            })
+            .catch(function (err) {
+              toast('The acquisition could not be completed', err.message || 'Please try again.');
+            });
+        },
+        onError: function () {
+          toast('The concierge encountered a problem', 'Payment could not be initiated.');
         }
-      }
-    });
+      }).render('#paypal-buttons');
+      return true;
+    }
 
-    // Card visuals settle from 1.12 → 1 as each card crosses the viewport
-    document.querySelectorAll('.edition-card .ev-field').forEach(function (img) {
-      gsap.fromTo(img, { scale: 1.14 }, {
-        scale: 1,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: img.closest('.edition-card'),
-          containerAnimation: scrollTween,
-          start: 'left 95%',
-          end: 'left 35%',
-          scrub: true
-        }
+    if (!mount()) {
+      var tries = 0;
+      var t = setInterval(function () {
+        if (mount() || ++tries > 100) clearInterval(t);
+      }, 100);
+    }
+
+    function showCertificate(cert) {
+      setSvgText('cert-name', cert.name);
+      setSvgText('cert-serial',
+        'EDITION № ' + cert.serial + ' — ISSUED ' + String(cert.date).toUpperCase());
+      setSvgText('cert-code',
+        'VERIFICATION CODE ' + cert.code + ' — AUTHENTICATE AT LUXURYOFNOTHING.LIFE');
+      try { localStorage.removeItem('lon-cart'); } catch (e) {}
+
+      stagePay.hidden = true;
+      stageCert.hidden = false;
+      window.scrollTo(0, 0);
+      toast('Certificate of Absence generated',
+        '№ ' + cert.serial + ', inscribed to ' + cert.name + '.');
+
+      if (hasGSAP && !REDUCED) {
+        var tl = gsap.timeline();
+        tl.fromTo(stageCert, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power2.out' })
+          .fromTo('.cert-live-frame',
+            { clipPath: 'inset(0 0 100% 0)', y: 24 },
+            { clipPath: 'inset(0 0 0% 0)', y: 0, duration: 1.1, ease: 'power4.inOut' }, 0.1)
+          .fromTo('#cert-seal',
+            { scale: 0.4, rotation: -50, opacity: 0, transformOrigin: '50% 50%' },
+            { scale: 1, rotation: 0, opacity: 1, duration: 0.7, ease: 'back.out(2)' }, '-=0.3')
+          .fromTo('.cert-actions, .cert-keep-note, #stage-cert .back-row',
+            { opacity: 0, y: 18 },
+            { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.09 }, '-=0.35');
+      }
+    }
+
+    function setSvgText(id, value) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
+
+    // Download: rasterise the SVG at 2x. Fonts fall back to Georgia in the
+    // raster; Print/PDF uses the live webfonts.
+    var dlBtn = document.getElementById('cert-download');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', function () {
+        var svg = document.getElementById('cert-live');
+        if (!svg) return;
+        var xml = new XMLSerializer().serializeToString(svg);
+        var blob = new Blob([xml], { type: 'image/svg+xml;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var img = new Image();
+        img.onload = function () {
+          var canvas = document.createElement('canvas');
+          canvas.width = 1520; canvas.height = 1120;
+          var ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#FBFAF6';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          URL.revokeObjectURL(url);
+          var a = document.createElement('a');
+          a.download = 'certificate-of-absence.png';
+          a.href = canvas.toDataURL('image/png');
+          a.click();
+          toast('Certificate downloaded', 'A perfect copy of your proof of nothing.');
+        };
+        img.onerror = function () { URL.revokeObjectURL(url); window.print(); };
+        img.src = url;
       });
-    });
+    }
+    var prBtn = document.getElementById('cert-print');
+    if (prBtn) prBtn.addEventListener('click', function () { window.print(); });
   }
 
   /* ----------------------------------------------------------
